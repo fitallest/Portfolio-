@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Báo Giá Thiết Kế Website - Nasani.vn</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script> <!-- MỚI THÊM -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         body {
@@ -85,6 +86,55 @@
     </style>
 </head>
 <body>
+    
+    <!-- MỚI: Header & Navbar -->
+    <header class="bg-white/90 sticky top-0 z-50 backdrop-blur-md border-b border-gray-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo / Tên thương hiệu -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-indigo-600">
+                        Fi.tallest 
+                    </a>
+                </div>
+                
+                <!-- Menu cho Desktop -->
+                <div class="hidden md:flex md:items-center md:space-x-8">
+                    <a href="index.html" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Trang chủ</a>
+                    <a href="index.html#about" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Giới thiệu</a>
+                    <a href="index.html#services" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Dịch vụ</a>
+                    <a href="index.html#projects" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Dự án</a>
+                    <!-- Link Báo Giá (Active) -->
+                    <a href="Báo Giá Thiết Kế Website Chuyên Nghiệp.html" class="text-gray-900 font-medium hover:text-indigo-600 transition duration-150">Báo Giá</a>
+                    <a href="index.html#contact" class="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Liên hệ ngay
+                    </a>
+                </div>
+                
+                <!-- Nút Menu cho Mobile -->
+                <div class="-mr-2 flex items-center md:hidden">
+                    <button type="button" id="mobile-menu-button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-expanded="false">
+                        <span class="sr-only">Mở menu</span>
+                        <i data-lucide="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Menu Mobile (ẩn mặc định) -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Trang chủ</a>
+                <a href="index.html#about" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Giới thiệu</a>
+                <a href="index.html#services" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Dịch vụ</a>
+                <a href="index.html#projects" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Dự án</a>
+                <!-- Link Báo Giá (Active) -->
+                <a href="Báo Giá Thiết Kế Website Chuyên Nghiệp.html" class="bg-indigo-50 border-indigo-500 text-indigo-700 block px-3 py-2 rounded-md text-base font-medium">Báo Giá</a>
+                <a href="index.html#contact" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">Liên hệ ngay</a>
+            </div>
+        </div>
+    </header>
+    <!-- HẾT PHẦN MỚI -->
     
     <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
 
@@ -621,7 +671,50 @@
         </div>
     </div>
 
-    <!-- SCRIPT -->
+    <!-- MỚI: SCRIPT CHO MENU -->
+    <script>
+        // Kích hoạt icon
+        lucide.createIcons();
+
+        // Xử lý menu mobile
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuIcon = mobileMenuButton.querySelector('i');
+
+        if (mobileMenuButton) { // Kiểm tra nút có tồn tại không
+            mobileMenuButton.addEventListener('click', () => {
+                const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+                mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+                mobileMenu.classList.toggle('hidden');
+                
+                // Thay đổi icon
+                if (isExpanded) {
+                    mobileMenuIcon.setAttribute('data-lucide', 'menu');
+                } else {
+                    mobileMenuIcon.setAttribute('data-lucide', 'x');
+                }
+                lucide.createIcons(); // Tạo lại icon
+            });
+        }
+
+        // Đóng menu mobile khi click vào link
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                // Chỉ đóng menu nếu click vào link anchor quay về trang chủ
+                if (link.href && link.href.includes('index.html#')) {
+                    if (mobileMenuButton) {
+                        mobileMenuButton.setAttribute('aria-expanded', 'false');
+                        mobileMenu.classList.add('hidden');
+                        mobileMenuIcon.setAttribute('data-lucide', 'menu');
+                        lucide.createIcons();
+                    }
+                }
+            });
+        });
+    </script>
+    <!-- HẾT SCRIPT CHO MENU -->
+
+    <!-- SCRIPT (Existing script for quote page) -->
     <script>
         tailwind.config = {
             theme: { extend: { colors: { 'nasani-primary': '#4f46e5', 'nasani-light': '#eef2ff', 'hospital-theme': '#06b6d4' } } }
@@ -834,3 +927,5 @@
     </script>
 </body>
 </html>
+
+
