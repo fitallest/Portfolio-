@@ -1,0 +1,308 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ - Portfolio Thiết Kế Web & App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa; /* Màu nền xám rất nhạt */
+            color: #333;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #6366f1; /* Màu tím indigo */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4f46e5;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header & Navbar -->
+    <header class="bg-white/90 sticky top-0 z-50 backdrop-blur-md border-b border-gray-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo / Tên thương hiệu -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="text-2xl font-bold text-indigo-600">
+                        Fi.tallest 
+                    </a>
+                </div>
+                
+                <!-- Menu cho Desktop -->
+                <div class="hidden md:flex md:items-center md:space-x-8">
+                    <a href="#" class="text-gray-900 font-medium hover:text-indigo-600 transition duration-150">Trang chủ</a>
+                    <a href="#about" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Giới thiệu</a>
+                    <a href="#services" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Dịch vụ</a>
+                    <a href="#projects" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Dự án</a>
+                    <!-- Đây là link tới trang Báo Giá của bạn -->
+                    <a href="Báo Giá Thiết Kế Website Chuyên Nghiệp.html" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Báo Giá</a>
+                    <a href="#contact" class="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Liên hệ ngay
+                    </a>
+                </div>
+                
+                <!-- Nút Menu cho Mobile -->
+                <div class="-mr-2 flex items-center md:hidden">
+                    <button type="button" id="mobile-menu-button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-expanded="false">
+                        <span class="sr-only">Mở menu</span>
+                        <i data-lucide="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Menu Mobile (ẩn mặc định) -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#" class="bg-indigo-50 border-indigo-500 text-indigo-700 block px-3 py-2 rounded-md text-base font-medium">Trang chủ</a>
+                <a href="#about" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Giới thiệu</a>
+                <a href="#services" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Dịch vụ</a>
+                <a href="#projects" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Dự án</a>
+                <!-- Link Báo Giá trên mobile -->
+                <a href="Báo Giá Thiết Kế Website Chuyên Nghiệp.html" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Báo Giá</a>
+                <a href="#contact" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">Liên hệ ngay</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="bg-white">
+            <div class="max-w-7xl mx-auto py-20 px-4 sm:px-6 lg:py-32 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <span class="inline-block px-3 py-1 text-sm font-semibold text-indigo-600 bg-indigo-100 rounded-full mb-4">Designer & Developer</span>
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
+                            Thiết Kế Website & Ứng Dụng Chuyên Nghiệp
+                        </h1>
+                        <p class="mt-6 text-lg text-gray-600">
+                            Chào bạn, tôi là một chuyên gia thiết kế UI/UX và phát triển. Tôi biến những ý tưởng phức tạp thành các giải pháp số đẹp mắt, trực quan và dễ sử dụng.
+                        </p>
+                        <div class="mt-10 flex flex-wrap gap-4">
+                            <a href="#projects" class="inline-block px-6 py-3 rounded-lg bg-indigo-600 text-white font-medium shadow-md hover:bg-indigo-700 transition duration-300">
+                                Xem dự án của tôi
+                            </a>
+                            <a href="#contact" class="inline-block px-6 py-3 rounded-lg bg-gray-100 text-gray-800 font-medium hover:bg-gray-200 transition duration-300">
+                                Gửi yêu cầu
+                            </a>
+                        </div>
+                    </div>
+                    <div class="hidden md:block">
+                        <!-- Bạn có thể thay thế bằng hình ảnh của mình hoặc hình ảnh đại diện -->
+                        <img src="https://placehold.co/600x600/6366f1/white?text=Ảnh+Đại+Diện&font=inter" alt="Ảnh đại diện portfolio" class="rounded-lg shadow-2xl object-cover aspect-square">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Me Section -->
+        <section id="about" class="py-20 lg:py-32">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="lg:text-center">
+                    <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">Giới thiệu về tôi</h2>
+                    <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                        Một nhà thiết kế đam mê sáng tạo
+                    </p>
+                    <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                        Với hơn 5 năm kinh nghiệm trong ngành, tôi đã giúp nhiều doanh nghiệp từ nhỏ đến lớn xây dựng nhận diện thương hiệu số và ra mắt các sản phẩm thành công.
+                    </p>
+                </div>
+
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div class="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-lg">
+                        <div class="flex-shrink-0 p-4 bg-indigo-100 rounded-full">
+                            <i data-lucide="layout-grid" class="h-8 w-8 text-indigo-600"></i>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold text-gray-900">Thiết Kế UI/UX</h3>
+                        <p class="mt-2 text-gray-600">Tập trung vào trải nghiệm người dùng (UX) để tạo ra giao diện (UI) không chỉ đẹp mà còn hiệu quả.</p>
+                    </div>
+                    <div class="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-lg">
+                        <div class="flex-shrink-0 p-4 bg-indigo-100 rounded-full">
+                            <i data-lucide="smartphone" class="h-8 w-8 text-indigo-600"></i>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold text-gray-900">Phát Triển App</h3>
+                        <p class="mt-2 text-gray-600">Xây dựng ứng dụng di động mượt mà, hiệu năng cao cho cả nền tảng iOS và Android.</p>
+                    </div>
+                    <div class="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-lg">
+                        <div class="flex-shrink-0 p-4 bg-indigo-100 rounded-full">
+                            <i data-lucide="code" class="h-8 w-8 text-indigo-600"></i>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold text-gray-900">Phát Triển Web</h3>
+                        <p class="mt-2 text-gray-600">Chuyên nghiệp với các công nghệ web hiện đại như React, Vue, và Node.js để tạo ra website tốc độ cao.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-20 lg:py-32 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="lg:text-center">
+                    <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">Dịch vụ của tôi</h2>
+                    <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                        Tôi có thể giúp bạn những gì?
+                    </p>
+                </div>
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Dịch vụ 1: Thiết kế Website -->
+                    <div class="group p-8 bg-gray-50 rounded-lg shadow-sm hover:shadow-xl transition-all duration-300">
+                        <div class="flex items-center">
+                            <div class="p-3 bg-indigo-100 rounded-lg group-hover:bg-indigo-600 transition-all duration-300">
+                                <i data-lucide="monitor-smartphone" class="h-8 w-8 text-indigo-600 group-hover:text-white transition-all duration-300"></i>
+									</div>
+                            <h3 class="ml-4 text-2xl font-bold text-gray-900">Thiết Kế Website</h3>
+                        </div>
+                        <p class="mt-4 text-gray-600">
+                            Thiết kế website chuẩn Responsive, tối ưu SEO và tốc độ tải trang. Từ trang landing page, website công ty, đến các hệ thống e-commerce phức tạp.
+                        </p>
+                    </div>
+                    <!-- Dịch vụ 2: Thiết kế Ứng dụng -->
+                    <div class="group p-8 bg-gray-50 rounded-lg shadow-sm hover:shadow-xl transition-all duration-300">
+                        <div class="flex items-center">
+                            <div class="p-3 bg-indigo-100 rounded-lg group-hover:bg-indigo-600 transition-all duration-300">
+                                <i data-lucide="tablet-smartphone" class="h-8 w-8 text-indigo-600 group-hover:text-white transition-all duration-300"></i>
+                            </div>
+                            <h3 class="ml-4 text-2xl font-bold text-gray-900">Thiết Kế Ứng Dụng Di Động</h3>
+                        </div>
+                        <p class="mt-4 text-gray-600">
+                            Thiết kế giao diện (UI) và trải nghiệm người dùng (UX) cho ứng dụng di động. Tạo ra các prototype tương tác giúp bạn hình dung rõ ràng sản phẩm.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20 lg:py-32">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="lg:text-center">
+                    <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">Dự án</h2>
+                    <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                        Các dự án tiêu biểu của tôi
+                    </p>
+                </div>
+                
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Dự án 1 -->
+                    <div class="group bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
+                        <img class="h-60 w-full object-cover" src="https://placehold.co/600x400/a5b4fc/312e81?text=Dự+Án+Y+Tế&font=inter" alt="Dự án Y tế">
+                        <div class="p-6">
+                            <p class="text-sm font-medium text-indigo-600">Thiết kế Website</p>
+                            <h3 class="mt-2 text-xl font-semibold text-gray-900">Hệ thống Đặt lịch Bệnh viện</h3>
+                            <p class="mt-3 text-gray-600">Một website cho phép bệnh nhân đặt lịch khám trực tuyến, tra cứu thông tin bác sĩ và dịch vụ.</p>
+                        </div>
+                    </div>
+                    <!-- Dự án 2 -->
+                    <div class="group bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
+                        <img class="h-60 w-full object-cover" src="https://placehold.co/600x400/818cf8/1e1b4b?text=Ứng+Dụng+TMĐT&font=inter" alt="Ứng dụng Thương mại điện tử">
+                        <div class="p-6">
+                            <p class="text-sm font-medium text-indigo-600">Thiết kế Ứng dụng</p>
+                            <h3 class="mt-2 text-xl font-semibold text-gray-900">App Thương Mại Điện Tử</h3>
+                            <p class="mt-3 text-gray-600">Giao diện ứng dụng mua sắm tập trung vào trải nghiệm mượt mà, nhanh chóng và cá nhân hóa.</p>
+                        </div>
+                    </div>
+                    <!-- Dự án 3 -->
+                    <div class="group bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
+                        <img class="h-60 w-full object-cover" src="https://placehold.co/600x400/c4b5fd/4338ca?text=Dự+Án+Spa&font=inter" alt="Dự án Spa/Làm đẹp">
+                        <div class="p-6">
+                            <p class="text-sm font-medium text-indigo-600">Thiết kế Website</p>
+                            <h3 class="mt-2 text-xl font-semibold text-gray-900">Website Giới Thiệu Spa</h3>
+                            <p class="mt-3 text-gray-600">Thiết kế thanh lịch, sang trọng, tập trung vào hình ảnh và đặt lịch dịch vụ làm đẹp.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 lg:py-32 bg-indigo-700">
+            <div class="max-w-3xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                    Hãy bắt đầu dự án của bạn
+                </h2>
+                <p class="mt-4 text-lg text-indigo-100">
+                    Bạn có một ý tưởng? Hãy chia sẻ với tôi. Tôi sẽ giúp bạn biến nó thành hiện thực.
+                </p>
+                <a href="mailto:caophi.nasani@gmail.com" class="mt-8 inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-indigo-700 bg-white hover:bg-indigo-50 transition duration-300">
+                    <i data-lucide="mail" class="h-5 w-5 mr-2"></i>
+                    Gửi Email cho tôi
+                </a>
+                <p class="mt-4 text-sm text-indigo-200">Hoặc gọi: (090) 9876 817 - (07654) 03 645</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-center space-x-6">
+                <a href="#" class="text-gray-400 hover:text-gray-300">
+                    <span class="sr-only">Facebook</span>
+                    <i data-lucide="facebook" class="h-6 w-6"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-gray-300">
+                    <span class="sr-only">Instagram</span>
+                    <i data-lucide="instagram" class="h-6 w-6"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-gray-300">
+                    <span class="sr-only">LinkedIn</span>
+                    <i data-lucide="linkedin" class="h-6 w-6"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-gray-300">
+                    <span class="sr-only">Github</span>
+                    <i data-lucide="github" class="h-6 w-6"></i>
+                </a>
+            </div>
+            <p class="mt-8 text-center text-base text-gray-400">
+                &copy; 2025 CAO NHẤT PHI. Mọi quyền được bảo lưu.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Kích hoạt icon
+        lucide.createIcons();
+
+        // Xử lý menu mobile
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuIcon = mobileMenuButton.querySelector('i');
+
+        mobileMenuButton.addEventListener('click', () => {
+            const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+            mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+            mobileMenu.classList.toggle('hidden');
+            
+            // Thay đổi icon
+            if (isExpanded) {
+                mobileMenuIcon.setAttribute('data-lucide', 'menu');
+            } else {
+                mobileMenuIcon.setAttribute('data-lucide', 'x');
+            }
+            lucide.createIcons(); // Tạo lại icon
+        });
+
+        // Đóng menu mobile khi click vào link
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuButton.setAttribute('aria-expanded', 'false');
+                mobileMenu.classList.add('hidden');
+                mobileMenuIcon.setAttribute('data-lucide', 'menu');
+                lucide.createIcons();
+            });
+        });
+    </script>
+</body>
+</html>
