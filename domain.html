@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng Ký Tên Miền Giá Rẻ - Fi.tallest</title>
     
-    <!-- Tailwind CSS, Lucide Icons, và Font từ trang chủ --><script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
@@ -238,13 +238,15 @@
             font-weight: bold;
             color: #d35400;
         }
+        /* Cập nhật: Đổi nút thành button để mở modal */
         .register-button {
             background-color: #28a745; /* Xanh lá */
             color: white;
             padding: 10px 20px;
             border-radius: 6px;
             font-weight: bold;
-            text-decoration: none;
+            border: none; /* Thêm vì là button */
+            cursor: pointer; /* Thêm vì là button */
             display: inline-block;
             transition: background-color 0.3s, transform 0.2s;
             white-space: nowrap;
@@ -264,6 +266,64 @@
             color: #777;
             margin-top: 20px;
         }
+
+        /* --- CSS CHO MODAL ĐĂNG KÝ --- */
+        .modal {
+          display: none; 
+          position: fixed; 
+          z-index: 1000; 
+          left: 0;
+          top: 0;
+          width: 100%; 
+          height: 100%; 
+          overflow: auto; 
+          background-color: rgba(0,0,0,0.5); 
+        }
+        
+        .modal-content {
+          background-color: #fefefe;
+          margin: 5% auto; /* Giảm margin top */
+          padding: 25px;
+          border: 1px solid #888;
+          width: 90%; /* Tăng width cho mobile */
+          max-width: 700px; /* Tăng max-width */
+          border-radius: 8px;
+          position: relative;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+          animation-name: animatetop;
+          animation-duration: 0.4s
+        }
+
+        @keyframes animatetop {
+          from {top: -300px; opacity: 0}
+          to {top: 0; opacity: 1}
+        }
+        
+        .modal-content h2 {
+          margin-top: 0;
+          color: #333; /* Đổi màu tiêu đề modal */
+          text-align: center;
+          margin-bottom: 20px;
+          font-size: 1.8rem;
+        }
+        
+        .close-btn {
+          color: #aaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+          position: absolute;
+          top: 10px;
+          right: 20px;
+        }
+        
+        .close-btn:hover,
+        .close-btn:focus {
+          color: black;
+          text-decoration: none;
+          cursor: pointer;
+        }
+        /* --- HẾT CSS MODAL --- */
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -300,6 +360,10 @@
                 padding: 8px 15px;
                 font-size: 0.9rem;
             }
+            /* Modal Responsive */
+            .modal-content {
+                margin: 10% auto;
+            }
         }
 
         @media (max-width: 480px) {
@@ -325,25 +389,35 @@
             .benefit-card p {
                 font-size: 0.9rem;
             }
+             /* Modal Responsive */
+            .modal-content {
+                padding: 20px;
+            }
+            .modal-content h2 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body class="bg-gray-50">
 
-    <!-- Header & Navbar (Sticky) --><header class="bg-white/90 sticky top-0 z-50 backdrop-blur-md border-b border-gray-200">
+    <header class="bg-white/90 sticky top-0 z-50 backdrop-blur-md border-b border-gray-200">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <!-- Logo / Tên thương hiệu --><div class="flex-shrink-0 flex items-center">
+                
+                <div class="flex-shrink-0 flex items-center">
                     <a href="index.html" class="text-2xl font-bold text-indigo-600">
                         Fi.tallest 
                     </a>
                 </div>
                 
-                <!-- Menu cho Desktop --><div class="hidden md:flex md:items-center md:space-x-8">
+                
+                <div class="hidden md:flex md:items-center md:space-x-8">
                     <a href="index.html#about" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Giới thiệu</a>
                     <a href="index.html#services" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Dịch vụ</a>
                     <a href="index.html#projects" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Dự án</a>
                     <a href="Hosting.html" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Hosting</a>
+                    <!-- Đánh dấu trang hiện tại -->
                     <a href="domain.html" class="text-indigo-600 font-medium transition duration-150">Tên miền</a>
                     <a href="Báo Giá Thiết Kế Website Chuyên Nghiệp.html" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Báo Giá</a>
                     <a href="index.html#contact" class="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -351,7 +425,8 @@
                     </a>
                 </div>
                 
-                <!-- Nút Menu cho Mobile --><div class="-mr-2 flex items-center md:hidden">
+                
+                <div class="-mr-2 flex items-center md:hidden">
                     <button type="button" id="mobile-menu-button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-expanded="false">
                         <span class="sr-only">Mở menu</span>
                         <i data-lucide="menu" class="h-6 w-6"></i>
@@ -360,27 +435,32 @@
             </div>
         </nav>
 
-        <!-- Menu Mobile (ẩn mặc định) --><div class="hidden md:hidden" id="mobile-menu">
+        
+        <div class="hidden md:hidden" id="mobile-menu">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="index.html#about" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Giới thiệu</a>
                 <a href="index.html#services" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Dịch vụ</a>
                 <a href="index.html#projects" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Dự án</a>
                 <a href="Hosting.html" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Hosting</a>
-                <a href="domain.html" class="text-indigo-600 block px-3 py-2 rounded-md text-base font-medium">Tên miền</a>
+                 <!-- Đánh dấu trang hiện tại -->
+                <a href="domain.html" class="text-indigo-600 bg-indigo-50 block px-3 py-2 rounded-md text-base font-medium">Tên miền</a>
                 <a href="Báo Giá Thiết Kế Website Chuyên Nghiệp.html" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Báo Giá</a>
                 <a href="index.html#contact" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">Liên hệ ngay</a>
             </div>
         </div>
     </header>
-    <!-- HẾT Header --><main>
-        <!-- Hero Section --><section class="hero-section">
+    
+    <main>
+        
+        <section class="hero-section">
             <div class="max-w-7xl mx-auto relative z-1">
                 <h1>Đăng Ký Tên Miền Giá Rẻ Cùng Fi.tallest</h1>
                 <p>Tìm kiếm tên miền hoàn hảo cho doanh nghiệp hoặc dự án cá nhân của bạn ngay hôm nay. Hàng triệu khách hàng đã tin tưởng lựa chọn chúng tôi!</p>
             </div>
         </section>
 
-        <!-- Domain Search Section --><section class="domain-search-container">
+        
+        <section class="domain-search-container">
             <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Tìm kiếm tên miền của bạn</h2>
             <div class="flex flex-col sm:flex-row gap-4 mb-4">
                 <input type="text" id="domainInput" class="domain-search-input flex-grow" placeholder="Nhập tên miền bạn muốn (ví dụ: tencongty)" />
@@ -389,11 +469,13 @@
                 </button>
             </div>
             <div id="suggestionResults" class="suggestion-box hidden">
-                <!-- Kết quả gợi ý sẽ được hiển thị ở đây --><p class="text-center text-gray-500">Nhập tên miền và nhấn "Tìm kiếm & Gợi ý" để xem các tên miền khả dụng!</p>
+                
+                <p class="text-center text-gray-500">Nhập tên miền và nhấn "Tìm kiếm & Gợi ý" để xem các tên miền khả dụng!</p>
             </div>
         </section>
 
-        <!-- Lợi ích khi đăng ký tên miền --><section class="py-12 bg-gray-50">
+        
+        <section class="py-12 bg-gray-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="section-title">NHỮNG LỢI ÍCH KHI ĐĂNG KÝ TÊN MIỀN TẠI Nasani</h2>
                 <p class="text-center text-gray-600 mb-10 max-w-3xl mx-auto">
@@ -435,7 +517,8 @@
             </div>
         </section>
 
-        <!-- Bảng giá tên miền Việt Nam --><section class="py-12">
+        
+        <section class="py-12">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="section-title">BẢNG GIÁ TÊN MIỀN VIỆT NAM (.VN)</h2>
                 <div class="price-table-container">
@@ -481,8 +564,9 @@
                                 <td class="price-value">199.000đ</td>
                             </tr>
                             <tr>
+                                <!-- Cập nhật: Đổi thành button mở modal -->
                                 <td colspan="4">
-                                    <a href="#" class="register-button">ĐĂNG KÝ</a>
+                                    <button class="register-button open-register-modal">ĐĂNG KÝ</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -492,7 +576,8 @@
             </div>
         </section>
 
-        <!-- Bảng giá tên miền Quốc tế --><section class="py-12 bg-gray-50">
+        
+        <section class="py-12 bg-gray-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="section-title">BẢNG GIÁ TÊN MIỀN QUỐC TẾ</h2>
                 <div class="price-table-container">
@@ -543,8 +628,9 @@
                                 <td class="price-value">691.200đ</td>
                             </tr>
                             <tr>
+                                <!-- Cập nhật: Đổi thành button mở modal -->
                                 <td colspan="4">
-                                    <a href="#" class="register-button">ĐĂNG KÝ</a>
+                                     <button class="register-button open-register-modal">ĐĂNG KÝ</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -556,21 +642,25 @@
 
     </main>
 
-    <!-- Footer --><footer class="bg-gray-900">
+    
+    <footer class="bg-gray-900">
         <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <p class="text-center text-base text-gray-400">&copy; 2025 Fi.tallest. Mọi quyền được bảo lưu.</p>
         </div>
     </footer>
 
-    <!-- Nút liên hệ nổi --><div class="fixed right-4 top-1/2 -translate-y-1/2 z-[1000] flex flex-col gap-3">
-        <!-- Nút Gọi --><a href="tel:0909876817" 
+    
+    <div class="fixed right-4 top-1/2 -translate-y-1/2 z-[1000] flex flex-col gap-3">
+        
+        <a href="tel:0909876817" 
            class="bg-indigo-600 text-white p-3 rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-300 ease-in-out transform hover:scale-110"
            aria-label="Gọi ngay"
            title="Gọi ngay (0909876817)">
             <i data-lucide="phone" class="w-6 h-6"></i>
         </a>
         
-        <!-- Nút Zalo (Sử dụng SĐT của bạn) --><a href="https://zalo.me/0909876817" 
+        
+        <a href="https://zalo.me/0909876817" 
            target="_blank" 
            rel="noopener noreferrer"
            class="bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300 ease-in-out transform hover:scale-110"
@@ -579,7 +669,79 @@
             <i data-lucide="message-circle" class="w-6 h-6"></i>
         </a>
     </div>
-    <!-- HẾT Nút liên hệ nổi --><script>
+
+    <!-- THÊM MỚI: Modal Đăng Ký Tư Vấn -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn close-register-modal">&times;</span>
+            <h2>Đăng ký tư vấn miễn phí</h2>
+            <form action="https://formspree.io/f/xldojlkn" method="POST" class="mt-6 space-y-6">
+                <!-- Họ tên và SĐT -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="modal_name" class="block text-sm font-medium text-gray-700">Họ và tên</label>
+                        <div class="mt-1">
+                            <input type="text" name="Họ tên" id="modal_name" autocomplete="name" class="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="modal_phone" class="block text-sm font-medium text-gray-700">
+                            Số điện thoại <span class="text-red-500">(Bắt buộc)</span>
+                        </label>
+                        <div class="mt-1">
+                            <input type="tel" name="Số điện thoại" id="modal_phone" autocomplete="tel" required class="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dịch vụ quan tâm -->
+                <div>
+                    <fieldset>
+                        <legend class="text-base font-medium text-gray-900">Dịch vụ bạn quan tâm</legend>
+                        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
+                            <div class="flex items-center">
+                                <input id="modal_service_web" name="Tư vấn Web" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                <label for="modal_service_web" class="ml-3 block text-sm font-medium text-gray-700">Tư vấn Web</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="modal_service_app" name="Tư vấn App" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                <label for="modal_service_app" class="ml-3 block text-sm font-medium text-gray-700">Tư vấn App</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="modal_service_hosting" name="Hosting" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                <label for="modal_service_hosting" class="ml-3 block text-sm font-medium text-gray-700">Hosting</label>
+                            </div>
+                            <div class="flex items-center">
+                                <!-- Mặc định tích chọn Tên miền -->
+                                <input id="modal_service_domain" name="Tên miền" type="checkbox" checked class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                <label for="modal_service_domain" class="ml-3 block text-sm font-medium text-gray-700">Tên miền</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- Nội dung thêm -->
+                <div>
+                    <label for="modal_message" class="block text-sm font-medium text-gray-700">Nội dung thêm</label>
+                    <div class="mt-1">
+                        <textarea id="modal_message" name="Nội dung thêm" rows="4" class="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md" placeholder="Bạn có yêu cầu gì thêm..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Nút gửi -->
+                <div class="text-right">
+                    <button type="submit" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <i data-lucide="send" class="mr-2 -ml-1 h-5 w-5"></i>
+                        Gửi đăng ký
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- HẾT MODAL -->
+    
+
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons(); // Khởi tạo Lucide Icons
 
@@ -604,6 +766,21 @@
                     }
                     lucide.createIcons(); // Tạo lại icon
                 });
+
+                // Đóng menu khi click link trên mobile
+                document.querySelectorAll('#mobile-menu a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        // Chỉ đóng nếu click vào link anchor (#) hoặc link trang khác
+                        if (link.href && (link.href.includes('#') || !link.href.includes('domain.html'))) { 
+                            mobileMenuButton.setAttribute('aria-expanded', 'false');
+                            mobileMenu.classList.add('hidden');
+                            if (mobileMenuIcon) {
+                                mobileMenuIcon.setAttribute('data-lucide', 'menu');
+                            }
+                            lucide.createIcons();
+                        }
+                    });
+                });
             }
             // === HẾT SCRIPT MENU MOBILE ===
 
@@ -613,7 +790,6 @@
             const suggestionResults = document.getElementById('suggestionResults');
 
             // Danh sách các đuôi tên miền và giá tương ứng (tạm thời để demo)
-            // LƯU Ý: Đây chỉ là dữ liệu giả lập. Trong thực tế, bạn sẽ cần API để kiểm tra tính khả dụng và giá.
             const domainExtensions = [
                 { ext: '.com', price: '366.120đ', type: 'qt' },
                 { ext: '.vn', price: '820.000đ', type: 'vn' },
@@ -631,50 +807,107 @@
                 { ext: '.online', price: '180.000đ', type: 'qt' },
             ];
 
-            searchDomainButton.addEventListener('click', () => {
-                const baseDomain = domainInput.value.trim().toLowerCase();
-                suggestionResults.innerHTML = ''; // Xóa kết quả cũ
-                suggestionResults.classList.remove('hidden');
+            if(searchDomainButton && domainInput && suggestionResults) {
+                searchDomainButton.addEventListener('click', () => {
+                    const baseDomain = domainInput.value.trim().toLowerCase().replace(/\s+/g, '-'); // Thay khoảng trắng bằng gạch nối
+                    suggestionResults.innerHTML = ''; // Xóa kết quả cũ
+                    suggestionResults.classList.remove('hidden');
 
-                if (baseDomain === '') {
-                    suggestionResults.innerHTML = '<p class="text-center text-gray-500">Vui lòng nhập tên miền bạn muốn tìm kiếm.</p>';
-                    return;
-                }
+                    if (baseDomain === '') {
+                        suggestionResults.innerHTML = '<p class="text-center text-gray-500">Vui lòng nhập tên miền bạn muốn tìm kiếm.</p>';
+                        return;
+                    }
 
-                const results = [];
-                domainExtensions.forEach(extInfo => {
-                    const fullDomain = baseDomain + extInfo.ext;
-                    // Giả lập tính khả dụng: 50% khả năng có sẵn, một số đuôi phổ biến sẽ dễ bị trùng hơn
-                    const isAvailable = Math.random() > 0.5 || (extInfo.ext === '.com' && Math.random() > 0.8) || (extInfo.ext === '.vn' && Math.random() > 0.7);
-                    
-                    results.push({
-                        domain: fullDomain,
-                        price: extInfo.price,
-                        available: isAvailable
-                    });
+                    // Hiển thị loading...
+                    suggestionResults.innerHTML = '<p class="text-center text-gray-500">Đang tìm kiếm...</p>';
+
+                    // Giả lập độ trễ khi gọi API
+                    setTimeout(() => {
+                        suggestionResults.innerHTML = ''; // Xóa loading
+                        const results = [];
+                        domainExtensions.forEach(extInfo => {
+                            const fullDomain = baseDomain + extInfo.ext;
+                            const isAvailable = Math.random() > 0.5 || (extInfo.ext === '.com' && Math.random() > 0.8) || (extInfo.ext === '.vn' && Math.random() > 0.7);
+                            
+                            results.push({
+                                domain: fullDomain,
+                                price: extInfo.price,
+                                available: isAvailable
+                            });
+                        });
+
+                        if (results.length > 0) {
+                            results.forEach(item => {
+                                const div = document.createElement('div');
+                                div.className = 'suggestion-item';
+                                div.innerHTML = `
+                                    <span>${item.domain}</span>
+                                    <div>
+                                        <span class="price mr-4">${item.price}</span>
+                                        <span class="status ${item.available ? 'available' : 'unavailable'}">
+                                            ${item.available ? 'Đang có' : 'Đã đăng ký'}
+                                        </span>
+                                        ${item.available ? '<button class="open-register-modal ml-2 text-indigo-600 hover:text-indigo-800 text-sm font-medium">Đăng ký</button>' : ''}
+                                    </div>
+                                `;
+                                suggestionResults.appendChild(div);
+                            });
+                            // Gắn lại sự kiện cho các nút đăng ký mới được tạo
+                            attachModalOpenListeners(); 
+                        } else {
+                            suggestionResults.innerHTML = '<p class="text-center text-gray-500">Không tìm thấy gợi ý nào cho tên miền này.</p>';
+                        }
+                    }, 500); // Giả lập 0.5 giây độ trễ
+
                 });
+            }
+            // === HẾT SCRIPT GỢI Ý TÊN MIỀN ===
 
-                if (results.length > 0) {
-                    results.forEach(item => {
-                        const div = document.createElement('div');
-                        div.className = 'suggestion-item';
-                        div.innerHTML = `
-                            <span>${item.domain}</span>
-                            <div>
-                                <span class="price mr-4">${item.price}</span>
-                                <span class="status ${item.available ? 'available' : 'unavailable'}">
-                                    ${item.available ? 'Đang có' : 'Đã đăng ký'}
-                                </span>
-                            </div>
-                        `;
-                        suggestionResults.appendChild(div);
-                    });
-                } else {
-                    suggestionResults.innerHTML = '<p class="text-center text-gray-500">Không tìm thấy gợi ý nào cho tên miền này.</p>';
+            // === SCRIPT MỞ/ĐÓNG MODAL ĐĂNG KÝ ===
+            const registerModal = document.getElementById('registerModal');
+            const openModalButtons = document.querySelectorAll('.open-register-modal');
+            const closeModalButtons = document.querySelectorAll('.close-register-modal');
+
+            function openModal() {
+                if (registerModal) {
+                    registerModal.style.display = 'block';
+                    lucide.createIcons(); // Kích hoạt icon (nếu có trong modal)
+                }
+            }
+
+            function closeModal() {
+                 if (registerModal) {
+                    registerModal.style.display = 'none';
+                }
+            }
+            
+            // Hàm để gắn listener mở modal (cần gọi lại khi tạo nút mới)
+            function attachModalOpenListeners() {
+                 document.querySelectorAll('.open-register-modal').forEach(button => {
+                    // Xóa listener cũ trước khi thêm mới để tránh trùng lặp
+                    button.removeEventListener('click', openModal); 
+                    button.addEventListener('click', openModal);
+                });
+            }
+
+            // Gắn listener lần đầu
+            attachModalOpenListeners();
+
+            // Gắn listener đóng modal
+            closeModalButtons.forEach(button => {
+                button.addEventListener('click', closeModal);
+            });
+
+            // Đóng modal khi click bên ngoài
+            window.addEventListener('click', (event) => {
+                if (event.target == registerModal) {
+                    closeModal();
                 }
             });
-            // === HẾT SCRIPT GỢI Ý TÊN MIỀN ===
+            // === HẾT SCRIPT MODAL ===
+
         });
     </script>
 </body>
 </html>
+
