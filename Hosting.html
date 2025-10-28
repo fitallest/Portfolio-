@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bảng Giá Hosting NASANI - Cập nhật Dịch Vụ Chăm Sóc</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #d35400;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      padding: 12px 24px;
+      background: #e0e0e0;
+      cursor: pointer;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .tab:hover {
+      background: #ccc;
+    }
+
+    .tab.active {
+      background: #007BFF;
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Responsive Table Wrapper */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 0 auto;
+      max-width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: white;
+    }
+
+    .price-table {
+      width: max-content;
+      min-width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      table-layout: fixed;
+    }
+
+    .price-table th,
+    .price-table td {
+      padding: 10px 8px;
+      border: 1px solid #ddd;
+      text-align: center;
+      vertical-align: middle;
+      word-break: break-word;
+      min-width: 180px;
+    }
+
+    .header-cell {
+      color: white;
+      font-weight: bold;
+      padding: 12px 8px;
+      white-space: nowrap;
+    }
+
+    /* Màu nền cho từng cột */
+    .col1 { background: #2ecc71; } /* Xanh lá */
+    .col2 { background: #3498db; } /* Xanh dương */
+    .col3 { background: #9b59b6; } /* Tím */
+    .col4 { background: #e74c3c; } /* Đỏ */
+    .col5 { background: #f39c12; } /* Cam */
+    .col6 { background: #1abc9c; } /* Xanh ngọc */
+    .col7 { background: #d35400; } /* Cam đậm */
+    .col8 { background: #8e44ad; } /* Tím đậm */
+
+    .price-month {
+      color: #27ae60;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .price-year {
+      color: #c0392b;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    
+    /* --- CSS CHO NÚT VÀ MODAL --- */
+    .service-btn {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+    
+    .service-btn:hover {
+      background-color: #0056b3;
+    }
+    
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 1000; 
+      left: 0;
+      top: 0;
+      width: 100%; 
+      height: 100%; 
+      overflow: auto; 
+      background-color: rgba(0,0,0,0.5); 
+    }
+    
+    .modal-content {
+      background-color: #fefefe;
+      margin: 10% auto;
+      padding: 25px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 8px;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      animation-name: animatetop;
+      animation-duration: 0.4s
+    }
+
+    @keyframes animatetop {
+      from {top: -300px; opacity: 0}
+      to {top: 0; opacity: 1}
+    }
+    
+    .modal-content h2 {
+      margin-top: 0;
+      color: #d35400;
+      text-align: left;
+    }
+    
+    .modal-content ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    
+    .modal-content li {
+      margin-bottom: 10px;
+      font-size: 14px;
+      padding-left: 20px;
+      position: relative;
+    }
+    
+    .modal-content li::before {
+        content: '✓';
+        color: #27ae60;
+        font-weight: bold;
+        position: absolute;
+        left: 0;
+    }
+    
+    .close-btn {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+    }
+    
+    .close-btn:hover,
+    .close-btn:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    /* --- HẾT CSS MODAL --- */
+
+    /* --- CSS CHO NÚT TỔNG QUAN --- */
+    .overview-btn-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .overview-btn {
+      background-color: #d35400; /* Màu cam chủ đạo */
+      color: white;
+      padding: 12px 25px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 16px;
+      transition: background-color 0.3s, box-shadow 0.3s;
+      display: inline-block;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .overview-btn:hover {
+      background-color: #a04000;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    /* --- HẾT CSS NÚT TỔNG QUAN --- */
+
+    @media (max-width: 768px) {
+      .price-table th,
+      .price-table td {
+        padding: 8px 6px;
+        font-size: 12px;
+        min-width: 160px;
+      }
+      .header-cell {
+        padding: 10px 6px;
+        font-size: 13px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .price-table th,
+      .price-table td {
+        min-width: 140px;
+        font-size: 11px;
+        padding: 6px 4px;
+      }
+      .header-cell {
+        padding: 8px 4px;
+        font-size: 12px;
+      }
+      .tab {
+        padding: 10px 16px;
+        font-size: 13px;
+      }
+      .modal-content {
+        width: 90%;
+        margin: 20% auto;
+      }
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 20px;
+      padding: 12px;
+      background: #fff;
+      border-top: 2px solid #ffc107;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>BẢNG GIÁ PHÍ DỊCH VỤ DUY TRÌ HÀNG NĂM</h1>
+  <p style="text-align:center; font-style:italic;">PHÍ DỊCH VỤ THUÊ HOSTING (Đã bao gồm VAT 8%)</p>
+
+  <!-- NÚT TỔNG QUAN MỚI -->
+  <div class="overview-btn-container">
+    <a href="dich-vu-tong-quan.html" class="overview-btn">Tổng Quan Dịch Vụ Chăm Sóc</a>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="tab1">Hosting Cá Nhân</div>
+    <div class="tab" data-tab="tab2">Hosting Doanh Nghiệp</div>
+    <div class="tab" data-tab="tab3">Hosting Siêu Doanh Nghiệp</div>
+  </div>
+
+  <!-- === TAB 1: Hosting Cá Nhân === -->
+  <div id="tab1" class="tab-content active">
+    <div class="table-wrapper">
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th class="header-cell col1">3GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col2">5GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col3">7GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col4">10GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col5">16GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col6">20GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col7">25GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col8">30GB<br><small>Dung lượng</small></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>70GB<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td></tr>
+          <tr><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td></tr>
+          <tr><td>3<br>&#128179; Mysql</td><td>5<br>&#128179; Mysql</td><td>7<br>&#128179; Mysql</td><td>10<br>&#128179; Mysql</td><td>16<br>&#128179; Mysql</td><td>20<br>&#128179; Mysql</td><td>25<br>&#128179; Mysql</td><td>30<br>&#128179; Mysql</td></tr>
+          <tr><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td></tr>
+          <tr><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td></tr>
+          <tr>
+            <td>
+              <span class="price-month">282.000 VND/Tháng</span><br><span class="price-year">3.348.000 VND/Năm</span>
+            </td>
+            <td>
+              <span class="price-month">406.000 VND/Tháng</span><br><span class="price-year">4.872.000 VND/Năm</span>
+            </td>
+            <td>
+              <span class="price-month">500.000 VND/Tháng</span><br><span class="price-year">6.000.000 VND/Năm</span>
+            </td>
+            <td>
+              <span class="price-month">600.000 VND/Tháng</span><br><span class="price-year">7.200.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-cn-10gb">Xem dịch vụ</button>
+            </td>
+            <td>
+              <span class="price-month">840.000 VND/Tháng</span><br><span class="price-year">10.080.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-cn-16gb">Xem dịch vụ</button>
+            </td>
+            <td>
+              <span class="price-month">1.000.000 VND/Tháng</span><br><span class="price-year">12.000.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-cn-20gb">Xem dịch vụ</button>
+            </td>
+            <td>
+              <span class="price-month">1.200.000 VND/Tháng</span><br><span class="price-year">14.400.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-cn-25gb">Xem dịch vụ</button>
+            </td>
+            <td>
+              <span class="price-month">1.340.000 VND/Tháng</span><br><span class="price-year">16.080.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-cn-30gb">Xem dịch vụ</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- === TAB 2: Hosting Doanh Nghiệp === -->
+  <div id="tab2" class="tab-content">
+    <div class="table-wrapper">
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th class="header-cell col1">10GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col2">16GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col3">20GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col4">25GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col5">30GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col6">35GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col7">40GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col8">50GB<br><small>Dung lượng</small></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td></tr>
+          <tr><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td></tr>
+          <tr><td>10<br>&#128179; Mysql</td><td>16<br>&#128179; Mysql</td><td>20<br>&#128179; Mysql</td><td>25<br>&#128179; Mysql</td><td>30<br>&#128179; Mysql</td><td>35<br>&#128179; Mysql</td><td>40<br>&#128179; Mysql</td><td>50<br>&#128179; Mysql</td></tr>
+          <tr><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td></tr>
+          <tr><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td></tr>
+          <tr>
+            <td>
+              <span class="price-month">600.000 VND/Tháng</span><br><span class="price-year">7.200.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-dn-10gb">Xem dịch vụ</button>
+            </td>
+            <td>
+              <span class="price-month">840.000 VND/Tháng</span><br><span class="price-year">10.080.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-dn-16gb">Xem dịch vụ</button>
+            </td>
+            <td>
+              <span class="price-month">1.000.000 VND/Tháng</span><br><span class="price-year">12.000.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-dn-20gb">Xem dịch vụ</button>
+            </td>
+            <td>
+              <span class="price-month">1.200.000 VND/Tháng</span><br><span class="price-year">14.400.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-dn-25gb">Xem dịch vụ</button>
+            </td>
+            <td>
+              <span class="price-month">1.340.000 VND/Tháng</span><br><span class="price-year">16.080.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-dn-30gb">Xem dịch vụ</button>
+            </td>
+            <td>
+              <span class="price-month">1.550.000 VND/Tháng</span><br><span class="price-year">18.600.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-dn-35gb">Xem dịch vụ</button>
+            </td>
+            <td>
+              <span class="price-month">1.670.000 VND/Tháng</span><br><span class="price-year">20.080.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-dn-40gb">Xem dịch vụ</button>
+            </td>
+            <td>
+              <span class="price-month">2.000.000 VND/Tháng</span><br><span class="price-year">24.000.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-dn-50gb">Xem dịch vụ</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- === TAB 3: Hosting Siêu Doanh Nghiệp === -->
+  <div id="tab3" class="tab-content">
+    <div class="table-wrapper">
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th class="header-cell col1">10GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col2">20GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col3">30GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col4">50GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col5">70GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col6">100GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col7">200GB<br><small>Dung lượng</small></th>
+            <th class="header-cell col8">1TB<br><small>Dung lượng</small></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td><td>KGH<br>&#8644; Băng thông</td></tr>
+          <tr><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td><td>KGH<br>&#127760; Subdomain</td></tr>
+          <tr><td>10<br>&#128179; Mysql</td><td>20<br>&#128179; Mysql</td><td>30<br>&#128179; Mysql</td><td>50<br>&#128179; Mysql</td><td>70<br>&#128179; Mysql</td><td>100<br>&#128179; Mysql</td><td>200<br>&#128179; Mysql</td><td>1000<br>&#128179; Mysql</td></tr>
+          <tr><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<chuyển 9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td><td>KGH<br>&#9993; Địa chỉ Mail</td></tr>
+          <tr><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td><td>Miễn phí<br>&#9729; Backup</td></tr>
+          <tr>
+            <td>
+              <span class="price-month">600.000 VND/Tháng</span><br><span class="price-year">7.200.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-sdn-10gb">Xem dịch vụ</button>
+            </td>
+            <td>
+              <span class="price-month">1.000.000 VND/Tháng</span><br><span class="price-year">12.000.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-sdn-20gb">Xem dịch vụ</button>
+            </td>
+            <td>
+              <span class="price-month">1.340.000 VND/Tháng</span><br><span class="price-year">16.080.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-sdn-30gb">Xem dịch vụ</button>
+            </td>
+            <td>
+              <span class="price-month">2.000.000 VND/Tháng</span><br><span class="price-year">24.000.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-sdn-50gb">Xem dịch vụ</button>
+            </td>
+            <td>
+              <span class="price-month">2.670.000 VND/Tháng</span><br><span class="price-year">32.004.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-sdn-70gb">Xem dịch vụ</button>
+            </td>
+            <td>
+              <span class="price-month">3.600.000 VND/Tháng</span><br><span class="price-year">43.200.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-sdn-100gb">Xem dịch vụ</button>
+            </td>
+            <td>
+              <span class="price-month">6.000.000 VND/Tháng</span><br><span class="price-year">72.000.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-sdn-200gb">Xem dịch vụ</button>
+            </td>
+            <td>
+              <span class="price-month">17.900.000 VND/Tháng</span><br><span class="price-year">192.000.000 VND/Năm</span>
+              <br><button class="service-btn" data-modal="modal-sdn-1tb">Xem dịch vụ</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    Tổng quan cấu hình: Server IBM/CISCO/INTEL với 2 CPU Intel Xeon Quad Core, Công nghệ siêu phân luồng với 16 Core & công nghệ lưu trữ nhanh nhất SSD RAID 10
+  </div>
+
+  <!-- =========== NỘI DUNG MODAL (POPUP) =========== -->
+
+  <!-- Modals cho Hosting Cá Nhân -->
+  <div id="modal-cn-10gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Cá Nhân 10GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li></ul></div></div>
+  <div id="modal-cn-16gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Cá Nhân 16GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li></ul></div></div>
+  <div id="modal-cn-20gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Cá Nhân 20GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li><li>Hỗ trợ đăng 5 bài viết/tháng</li></ul></div></div>
+  <div id="modal-cn-25gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Cá Nhân 25GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li><li>Hỗ trợ đăng 5 bài viết/tháng</li></ul></div></div>
+  <div id="modal-cn-30gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Cá Nhân 30GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li><li>Hỗ trợ đăng 10 bài viết/tháng</li></ul></div></div>
+
+  <!-- Modals cho Hosting Doanh Nghiệp -->
+  <div id="modal-dn-10gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Doanh Nghiệp 10GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li></ul></div></div>
+  <div id="modal-dn-16gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Doanh Nghiệp 16GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li></ul></div></div>
+  <div id="modal-dn-20gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Doanh Nghiệp 20GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li><li>Hỗ trợ đăng 10 bài viết/tháng</li></ul></div></div>
+  <div id="modal-dn-25gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Doanh Nghiệp 25GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li><li>Hỗ trợ đăng 10 bài viết/tháng</li></ul></div></div>
+  <div id="modal-dn-30gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Doanh Nghiệp 30GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li><li>Hỗ trợ đăng 15 bài viết/tháng</li></ul></div></div>
+  <div id="modal-dn-35gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Doanh Nghiệp 35GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li><li>Hỗ trợ đăng 15 bài viết/tháng</li></ul></div></div>
+  <div id="modal-dn-40gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Doanh Nghiệp 40GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li><li>Hỗ trợ đăng 15 bài viết/tháng</li></ul></div></div>
+  <div id="modal-dn-50gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Doanh Nghiệp 50GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li><li>Hỗ trợ đăng 20 bài viết/tháng</li></ul></div></div>
+
+  <!-- Modals cho Hosting Siêu Doanh Nghiệp -->
+  <div id="modal-sdn-10gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Siêu DN 10GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li><li>Hỗ trợ đăng 15 bài viết/tháng</li></ul></div></div>
+  <div id="modal-sdn-20gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Siêu DN 20GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li><li>Hỗ trợ đăng 15 bài viết/tháng</li></ul></div></div>
+  <div id="modal-sdn-30gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Siêu DN 30GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li><li>Hỗ trợ đăng 20 bài viết/tháng</li></ul></div></div>
+  <div id="modal-sdn-50gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Siêu DN 50GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li><li>Hỗ trợ đăng 20 bài viết/tháng</li><li>Chuyên gia SEO riêng</li></ul></div></div>
+  <div id="modal-sdn-70gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Siêu DN 70GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li><li>Hỗ trợ đăng 25 bài viết/tháng</li><li>Chuyên gia SEO riêng</li></ul></div></div>
+  <div id="modal-sdn-100gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Siêu DN 100GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li><li>Hỗ trợ đăng 25 bài viết/tháng</li><li>Chuyên gia SEO riêng</li></ul></div></div>
+  <div id="modal-sdn-200gb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Siêu DN 200GB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li><li>Hỗ trợ đăng 30 bài viết/tháng</li><li>Chuyên gia SEO riêng</li></ul></div></div>
+  <div id="modal-sdn-1tb" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2>Dịch vụ chăm sóc (Siêu DN 1TB)</h2><ul><li>Hỗ trợ 24/7/365</li><li>Hỗ trợ kỹ thuật qua ticket, livechat</li><li>Hỗ trợ tối ưu website</li><li>Hỗ trợ SEO cơ bản</li><li>Hỗ trợ đăng 30 bài viết/tháng</li><li>Chuyên gia SEO riêng</li><li>Hỗ trợ marketing tổng thể</li></ul></div></div>
+  <!-- =========== HẾT NỘI DUNG MODAL =========== -->
+
+  <script>
+    // === SCRIPT TÍNH TOÁN 8% VAT ===
+    function calculateVAT() {
+      // Tìm tất cả các phần tử có class 'price-year'
+      document.querySelectorAll('.price-year').forEach(el => {
+        try {
+          // Lấy nội dung text, ví dụ "3.348.000 VND/Năm"
+          let text = el.textContent;
+          
+          // Trích xuất phần số "3.348.000"
+          let match = text.match(/([0-9\.]+)/);
+          
+          if (match && match[1]) {
+              // Chuyển "3.348.000" thành số 3348000
+              let basePrice = parseInt(match[1].replace(/\./g, ''));
+              
+              // Tính giá mới (giá gốc * 1.08) và làm tròn
+              let priceWithVAT = Math.round(basePrice * 1.08);
+              
+              // Định dạng lại số theo kiểu "3.615.840"
+              let formattedPrice = priceWithVAT.toLocaleString('vi-VN');
+              
+              // Cập nhật lại nội dung text của phần tử
+              el.textContent = `${formattedPrice} VND/Năm`;
+          }
+        } catch (e) {
+          // Ghi lại lỗi nếu có sự cố
+          console.error("Lỗi tính VAT cho:", el.textContent, e);
+        }
+      });
+    }
+    
+    // Chạy hàm tính VAT ngay khi nội dung trang được tải xong
+    document.addEventListener('DOMContentLoaded', calculateVAT);
+    // === HẾT SCRIPT VAT ===
+
+
+    // Script cho Tab
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        const id = tab.getAttribute('data-tab');
+        document.getElementById(id).classList.add('active');
+      });
+    });
+
+    // Script cho Modal (Popup)
+    document.querySelectorAll('.service-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const modalId = button.getAttribute('data-modal');
+        const modal = document.getElementById(modalId);
+        if (modal) {
+          modal.style.display = "block";
+        }
+      });
+    });
+
+    // Lấy tất cả các nút đóng modal
+    document.querySelectorAll('.close-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        button.closest('.modal').style.display = "none";
+      });
+    });
+
+    // Đóng modal khi nhấp chuột bên ngoài
+    window.addEventListener('click', (event) => {
+      if (event.target.classList.contains('modal')) {
+        event.target.style.display = "none";
+      }
+    });
+  </script>
+
+</body>
+</html>
