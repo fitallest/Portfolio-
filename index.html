@@ -6,10 +6,32 @@
     <title>Fi.tallest - Thiết Kế Website & Ứng dụng</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Thư viện canvas-confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         body {
             font-family: 'Inter', sans-serif;
+        }
+        /* CSS cho thông báo thành công */
+        #success-message {
+            position: fixed;
+            top: 20px; 
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #28a745;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 2000;
+            display: none; /* Ẩn ban đầu */
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        #success-message.show {
+            display: block;
+            opacity: 1;
         }
     </style>
 </head>
@@ -26,15 +48,13 @@
                     </a>
                 </div>
                 
-                <!-- Menu cho Desktop (ĐÃ CẬP NHẬT) -->
                 <!-- Menu cho Desktop -->
                 <div class="hidden md:flex md:items-center md:space-x-8">
                     <a href="#about" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Giới thiệu</a>
                     <a href="#services" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Dịch vụ</a>
                     <a href="#projects" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Dự án</a>
                     <a href="Hosting.html" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Hosting</a>
-                    <!-- Cập nhật link -->
-                    <a href="domain.html" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Tên miền</a> 
+                    <a href="domain.html" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Tên miền</a>
                     <a href="Báo Giá Thiết Kế Website Chuyên Nghiệp.html" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Báo Giá</a>
                     <a href="#contact" class="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         Liên hệ ngay
@@ -58,7 +78,6 @@
                 <a href="#services" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Dịch vụ</a>
                 <a href="#projects" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Dự án</a>
                 <a href="Hosting.html" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Hosting</a>
-                 <!-- Cập nhật link -->
                 <a href="domain.html" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Tên miền</a>
                 <a href="Báo Giá Thiết Kế Website Chuyên Nghiệp.html" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Báo Giá</a>
                 <a href="#contact" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">Liên hệ ngay</a>
@@ -67,14 +86,8 @@
     </header>
 
     <main>
-        <!-- THAY THẾ: Hero Section với Video Background -->
+        <!-- Hero Section với Video Background -->
         <section id="hero" class="relative h-[calc(100vh-4rem)] w-full overflow-hidden">
-            <!-- 
-                LƯU Ý QUAN TRỌNG VỀ VIDEO:
-                - src: Đang là link placeholder. Bạn PHẢI thay thế bằng link video của mình.
-                - poster: Là ảnh hiển thị trong khi video đang tải.
-                - autoplay, loop, muted, playsinline: Cần thiết để video tự chạy trên hầu hết trình duyệt.
-            -->
             <video 
                 class="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto object-cover transform -translate-x-1/2 -translate-y-1/2 z-0"
                 src="https://videos.pexels.com/video-files/7578543/7578543-hd_1920_1080_30fps.mp4" 
@@ -83,16 +96,8 @@
                 muted 
                 playsinline
                 poster="https://placehold.co/1920x1080/1e293b/ffffff?text=Video+Dang+Tai...">
-                <!-- 
-                Đây là video placeholder (tạm thời). 
-                Bạn nên tải video về và tự host (giống như file ảnh) hoặc dùng link video của bạn.
-                -->
             </video>
-
-            <!-- Lớp phủ mờ để đọc chữ -->
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-black/40 z-10"></div>
-
-            <!-- Nội dung văn bản (đè lên video) -->
             <div class="relative z-20 flex flex-col justify-center items-center h-full text-center max-w-4xl mx-auto px-4">
                 <span class="font-medium text-indigo-300">Thiết kế Web & Ứng dụng</span>
                 <h1 class="text-4xl md:text-5xl font-bold text-white mt-2 drop-shadow-lg">
@@ -111,13 +116,11 @@
                 </div>
             </div>
         </section>
-        <!-- HẾT Hero Section -->
 
         <!-- About Section -->
         <section id="about" class="bg-white py-16 md:py-24">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div class="flex-shrink-0 flex justify-center">
-                    <!-- BẠN NÊN THAY ẢNH NÀY (giống như ảnh đại diện) -->
                     <img class="h-64 w-64 rounded-full shadow-xl object-cover" 
                          src="https://placehold.co/256x256/e0e7ff/4f46e5?text=Fi.tallest" 
                          alt="Ảnh Fi.tallest">
@@ -136,7 +139,7 @@
             </div>
         </section>
 
-        <!-- Services Section (ĐÃ THÊM LẠI) -->
+        <!-- Services Section -->
         <section id="services" class="bg-gray-50 py-16 md:py-24">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center">
@@ -144,7 +147,6 @@
                     <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Cung cấp các giải pháp toàn diện từ thiết kế đến phát triển sản phẩm.</p>
                 </div>
                 <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Service 1: Web Design -->
                     <div class="bg-white p-6 rounded-lg shadow-lg">
                         <div class="flex-shrink-0">
                             <i data-lucide="layout-template" class="h-10 w-10 text-indigo-600"></i>
@@ -152,7 +154,6 @@
                         <h3 class="mt-4 text-xl font-bold text-gray-900">Thiết kế Website (UI/UX)</h3>
                         <p class="mt-2 text-base text-gray-600">Thiết kế giao diện độc quyền, tập trung vào trải nghiệm người dùng mượt mà và thân thiện trên mọi thiết bị (Responsive).</p>
                     </div>
-                    <!-- Service 2: Web Development -->
                     <div class="bg-white p-6 rounded-lg shadow-lg">
                         <div class="flex-shrink-0">
                             <i data-lucide="code-2" class="h-10 w-10 text-indigo-600"></i>
@@ -160,7 +161,6 @@
                         <h3 class="mt-4 text-xl font-bold text-gray-900">Phát triển Website</h3>
                         <p class="mt-2 text-base text-gray-600">Xây dựng website hoàn chỉnh dựa trên các công nghệ hiện đại (HTML, CSS, JavaScript, React...), đảm bảo tốc độ và bảo mật.</p>
                     </div>
-                    <!-- Service 3: App Design -->
                     <div class="bg-white p-6 rounded-lg shadow-lg">
                         <div class="flex-shrink-0">
                             <i data-lucide="smartphone" class="h-10 w-10 text-indigo-600"></i>
@@ -172,7 +172,7 @@
             </div>
         </section>
 
-        <!-- Projects Section (ĐÃ THÊM LẠI) -->
+        <!-- Projects Section -->
         <section id="projects" class="bg-white py-16 md:py-24">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center">
@@ -217,100 +217,100 @@
             </div>
         </section>
 
-        <!-- THÊM MỚI: Khung đăng ký tư vấn -->
-        <section id="register" class="bg-gray-50 py-16 md:py-24">
+        <!-- Register Form Section -->
+        <section id="register" class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-16 md:py-24">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center">
-                    <h2 class="text-3xl font-bold text-gray-900">Đăng ký tư vấn miễn phí</h2>
-                    <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Để lại thông tin, tôi sẽ liên hệ với bạn trong thời gian sớm nhất.</p>
-                </div>
-                
-                <!-- 
-                    Form: Gửi thông tin đến email của bạn qua Formspree.
-                    ĐÃ CẬP NHẬT: Sử dụng URL endpoint mới từ Formspree.
-                -->
-                <form action="https://formspree.io/f/xldojlkn" method="POST" class="mt-12 bg-white p-8 rounded-lg shadow-lg space-y-6">
+                <div class="bg-white p-8 md:p-12 rounded-xl shadow-xl">
+                    <h2 class="text-3xl font-bold text-gray-900 text-center mb-8">Đăng ký tư vấn miễn phí</h2>
+                    <p class="text-lg text-gray-600 text-center mb-10">Để lại thông tin, tôi sẽ liên hệ lại với bạn sớm nhất!</p>
                     
-                    <!-- Họ tên và SĐT -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Form đăng ký -->
+                    <form id="registrationForm" action="https://formspree.io/f/xldojlkn" method="POST" class="space-y-6">
+                         <!-- Trường ẩn để Formspree biết đây là AJAX -->
+                        <input type="hidden" name="_gotcha"> 
+                        <!-- Họ tên và SĐT -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700">Họ và tên</label>
+                                <div class="mt-1">
+                                    <input type="text" name="Họ tên" id="name" autocomplete="name" class="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700">
+                                    Số điện thoại <span class="text-red-500">(Bắt buộc)</span>
+                                </label>
+                                <div class="mt-1">
+                                    <input type="tel" name="Số điện thoại" id="phone" autocomplete="tel" required class="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dịch vụ quan tâm -->
                         <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700">Họ và tên</label>
-                            <div class="mt-1">
-                                <input type="text" name="Họ tên" id="name" autocomplete="name" class="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
-                            </div>
+                            <fieldset>
+                                <legend class="text-base font-medium text-gray-900">Dịch vụ bạn quan tâm</legend>
+                                <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                    <div class="flex items-center">
+                                        <input id="service_web" name="Tư vấn Web" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                        <label for="service_web" class="ml-3 block text-sm font-medium text-gray-700">Tư vấn Web</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="service_app" name="Tư vấn App" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                        <label for="service_app" class="ml-3 block text-sm font-medium text-gray-700">Tư vấn App</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="service_hosting" name="Hosting" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                        <label for="service_hosting" class="ml-3 block text-sm font-medium text-gray-700">Hosting</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="service_domain" name="Tên miền" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                        <label for="service_domain" class="ml-3 block text-sm font-medium text-gray-700">Tên miền</label>
+                                    </div>
+                                </div>
+                            </fieldset>
                         </div>
+
+                        <!-- Nội dung thêm -->
                         <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-700">
-                                Số điện thoại <span class="text-red-500">(Bắt buộc)</span>
-                            </label>
+                            <label for="message" class="block text-sm font-medium text-gray-700">Nội dung thêm</label>
                             <div class="mt-1">
-                                <input type="tel" name="Số điện thoại" id="phone" autocomplete="tel" required class="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
+                                <textarea id="message" name="Nội dung thêm" rows="4" class="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md" placeholder="Bạn có yêu cầu gì thêm..."></textarea>
                             </div>
                         </div>
-                    </div>
+                        
+                         <!-- Div hiển thị trạng thái form -->
+                        <div id="form-status" class="text-center text-sm"></div>
 
-                    <!-- Dịch vụ quan tâm -->
-                    <div>
-                        <fieldset>
-                            <legend class="text-base font-medium text-gray-900">Dịch vụ bạn quan tâm</legend>
-                            <!-- Thiết lập grid 2 cột trên mobile, 4 cột trên desktop -->
-                            <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
-                                <div class="flex items-center">
-                                    <input id="service_web" name="Tư vấn Web" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                    <label for="service_web" class="ml-3 block text-sm font-medium text-gray-700">Tư vấn Web</label>
-                                </div>
-                                <div class="flex items-center">
-                                    <input id="service_app" name="Tư vấn App" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                    <label for="service_app" class="ml-3 block text-sm font-medium text-gray-700">Tư vấn App</label>
-                                </div>
-                                <div class="flex items-center">
-                                    <input id="service_hosting" name="Hosting" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                    <label for="service_hosting" class="ml-3 block text-sm font-medium text-gray-700">Hosting</label>
-                                </div>
-                                <div class="flex items-center">
-                                    <input id="service_domain" name="Tên miền" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                    <label for="service_domain" class="ml-3 block text-sm font-medium text-gray-700">Tên miền</label>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-
-                    <!-- Nội dung thêm -->
-                    <div>
-                        <label for="message" class="block text-sm font-medium text-gray-700">Nội dung thêm</label>
-                        <div class="mt-1">
-                            <textarea id="message" name="Nội dung thêm" rows="4" class="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md" placeholder="Bạn có yêu cầu gì thêm..."></textarea>
+                        <!-- Nút gửi -->
+                        <div class="text-right">
+                             <!-- Thêm id="submitButton" -->
+                            <button type="submit" id="submitButton" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
+                                <i data-lucide="send" class="mr-2 -ml-1 h-5 w-5"></i>
+                                Gửi đăng ký
+                            </button>
                         </div>
-                    </div>
-
-                    <!-- Nút gửi -->
-                    <div class="text-right">
-                        <button type="submit" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            <i data-lucide="send" class="mr-2 -ml-1 h-5 w-5"></i>
-                            Gửi đăng ký
-                        </button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </section>
-        <!-- HẾT Khung đăng ký -->
 
-        <!-- Contact Section (ĐÃ CẬP NHẬT) -->
+
+        <!-- Contact Section -->
         <section id="contact" class="bg-gray-800 py-16 md:py-24">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <h2 class="text-3xl font-bold text-white">Bạn có dự án? Hãy liên hệ!</h2>
-                <p class="mt-4 text-lg text-gray-300">Tôi luôn sẵn sàng lắng nghe ý tưởng của bạn và biến nó thành hiện thực. Đừng ngần ngại gửi email hoặc gọi điện qua các kênh dưới đây.</p>
-                <!-- Thay đổi: Thêm flex-wrap và gap-4 để hỗ trợ nhiều nút -->
-                <div class="mt-8 flex flex-wrap justify-center gap-4">
-                    <!-- Nút Email đã cập nhật -->
+                <p class="mt-4 text-lg text-gray-300">Tôi luôn sẵn sàng lắng nghe ý tưởng của bạn và biến nó thành hiện thực. Đừng ngần ngại gửi email hoặc liên hệ qua các kênh dưới đây.</p>
+                <div class="mt-8 space-y-4 sm:space-y-0 sm:flex sm:justify-center sm:gap-4">
+                     <!-- Cập nhật Email -->
                     <a href="mailto:caophi.nasani@gmail.com" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
                         <i data-lucide="mail" class="mr-2 -ml-1 h-5 w-5"></i>
                         Gửi Email (caophi.nasani@gmail.com)
                     </a>
-                    <!-- Nút gọi điện mới -->
-                    <a href="tel:0909876817" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-gray-900 bg-white hover:bg-gray-50">
+                     <!-- Thêm nút Gọi -->
+                     <a href="tel:0909876817" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-gray-900 bg-white hover:bg-gray-50">
                         <i data-lucide="phone" class="mr-2 -ml-1 h-5 w-5"></i>
-                        Gọi ngay (0909876817)
+                        Gọi Ngay (0909876817)
                     </a>
                 </div>
                 <!-- Social Links -->
@@ -339,7 +339,7 @@
         </div>
     </footer>
 
-    <!-- THÊM MỚI: Nút liên hệ nổi -->
+    <!-- Floating Contact Buttons -->
     <div class="fixed right-4 top-1/2 -translate-y-1/2 z-[1000] flex flex-col gap-3">
         <!-- Nút Gọi -->
         <a href="tel:0909876817" 
@@ -356,54 +356,153 @@
            class="bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300 ease-in-out transform hover:scale-110"
            aria-label="Nhắn Zalo"
            title="Nhắn Zalo (0909876817)">
-            <!-- 
-                Lucide không có icon Zalo. 
-                Dùng tạm icon 'message-circle' (tin nhắn) trông rất công nghệ.
-                Đây là icon phù hợp nhất từ thư viện bạn đang dùng.
-            -->
             <i data-lucide="message-circle" class="w-6 h-6"></i>
         </a>
     </div>
-    <!-- HẾT Nút liên hệ nổi -->
+    <!-- HẾT Floating Buttons -->
+
+    <!-- Div cho thông báo thành công -->
+    <div id="success-message">
+        Đăng ký thành công! Cảm ơn bạn.
+    </div>
+
 
     <script>
-        // Kích hoạt icon
-        lucide.createIcons();
+        document.addEventListener('DOMContentLoaded', () => {
+            // Kích hoạt icon Lucide
+            lucide.createIcons();
 
-        // Xử lý menu mobile
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileMenuIcon = mobileMenuButton.querySelector('i');
+            // Xử lý menu mobile
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+          
+            if (mobileMenuButton && mobileMenu) {
+                const mobileMenuIcon = mobileMenuButton.querySelector('i');
 
-        mobileMenuButton.addEventListener('click', () => {
-            const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
-            mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
-            mobileMenu.classList.toggle('hidden');
-            
-            // Thay đổi icon (Menu <-> X)
-            if (isExpanded) {
-                mobileMenuIcon.setAttribute('data-lucide', 'menu');
-            } else {
-                mobileMenuIcon.setAttribute('data-lucide', 'x');
+                mobileMenuButton.addEventListener('click', () => {
+                    const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+                    mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+                    mobileMenu.classList.toggle('hidden');
+                    
+                    if (mobileMenuIcon) {
+                        // Thay đổi icon (Menu <-> X)
+                        if (isExpanded) {
+                            mobileMenuIcon.setAttribute('data-lucide', 'menu');
+                        } else {
+                            mobileMenuIcon.setAttribute('data-lucide', 'x');
+                        }
+                    }
+                    lucide.createIcons(); // Tạo lại icon
+                });
+
+                 // Đóng menu mobile khi click vào link (cho trang mượt hơn)
+                document.querySelectorAll('#mobile-menu a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        // Chỉ đóng menu nếu click vào link anchor (#)
+                        if (link.href && link.href.includes('#')) {
+                            if (mobileMenuButton && mobileMenu) {
+                                mobileMenuButton.setAttribute('aria-expanded', 'false');
+                                mobileMenu.classList.add('hidden');
+                                if (mobileMenuIcon) {
+                                    mobileMenuIcon.setAttribute('data-lucide', 'menu');
+                                }
+                                lucide.createIcons();
+                            }
+                        }
+                    });
+                });
             }
-            lucide.createIcons(); // Tạo lại icon
-        });
 
-        // Đóng menu mobile khi click vào link (cho trang mượt hơn)
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                // Chỉ đóng menu nếu click vào link anchor (#)
-                if (link.href && link.href.includes('#')) {
-                    mobileMenuButton.setAttribute('aria-expanded', 'false');
-                    mobileMenu.classList.add('hidden');
-                    mobileMenuIcon.setAttribute('data-lucide', 'menu');
-                    lucide.createIcons();
-                }
-            });
-        });
+
+            // === SCRIPT XỬ LÝ FORM SUBMISSION VÀ PHÁO HOA ===
+            const form = document.getElementById('registrationForm');
+            const formStatus = document.getElementById('form-status');
+            const submitButton = document.getElementById('submitButton');
+            const successMessage = document.getElementById('success-message'); // Lấy div thông báo
+
+            if (form && formStatus && submitButton) {
+                form.addEventListener('submit', function(event) {
+                    // Ngăn chặn việc gửi form mặc định NGAY LẬP TỨC
+                    event.preventDefault(); 
+                    console.log("Form submission prevented."); // Debug log
+
+                    const formData = new FormData(form);
+                    submitButton.disabled = true; // Vô hiệu hóa nút gửi
+                    formStatus.textContent = 'Đang gửi...';
+                    formStatus.className = 'text-center text-sm text-gray-500';
+
+                    fetch(form.action, {
+                        method: form.method,
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json' // Yêu cầu Formspree trả về JSON
+                        }
+                    }).then(response => {
+                        console.log("Fetch response received:", response.status); // Debug log
+                        if (response.ok) {
+                            // Thành công
+                            console.log("Form submitted successfully via AJAX."); // Debug log
+                            formStatus.textContent = 'Gửi thành công!';
+                            formStatus.className = 'text-center text-sm text-green-600';
+                            form.reset(); // Xóa các trường trong form
+                            
+                            // Hiển thị thông báo thành công
+                            if (successMessage) {
+                                successMessage.classList.add('show');
+                                setTimeout(() => {
+                                    successMessage.classList.remove('show');
+                                }, 3000); // Ẩn sau 3 giây
+                            }
+
+                            // Kích hoạt pháo hoa
+                            if (typeof confetti === 'function') {
+                                console.log("Triggering confetti!"); // Debug log
+                                confetti({
+                                    particleCount: 150, // Số lượng hạt
+                                    spread: 90,        // Độ rộng góc bắn
+                                    origin: { y: 0.6 } // Vị trí bắt đầu (0.6 = hơi thấp hơn giữa màn hình)
+                                });
+                            } else {
+                                console.log("Confetti function not found."); // Debug log
+                            }
+                            
+                        } else {
+                            // Có lỗi từ Formspree hoặc server
+                            console.log("Form submission failed via AJAX."); // Debug log
+                            response.json().then(data => {
+                                if (data && data.errors) {
+                                     formStatus.textContent = data.errors.map(error => error.message || 'Lỗi không xác định').join(", ");
+                                } else {
+                                    formStatus.textContent = 'Oops! Có lỗi xảy ra khi gửi form.';
+                                }
+                                formStatus.className = 'text-center text-sm text-red-600';
+                            }).catch(() => {
+                                // Lỗi khi parse JSON response
+                                formStatus.textContent = 'Oops! Có lỗi xảy ra khi xử lý phản hồi.';
+                                formStatus.className = 'text-center text-sm text-red-600';
+                            });
+                        }
+                    }).catch(error => {
+                        // Lỗi mạng hoặc lỗi khác
+                        console.error('Form submission fetch error:', error); // Debug log
+                        formStatus.textContent = 'Oops! Có lỗi mạng xảy ra khi gửi form.';
+                        formStatus.className = 'text-center text-sm text-red-600';
+                    }).finally(() => {
+                        submitButton.disabled = false; // Kích hoạt lại nút gửi
+                        // Xóa trạng thái sau vài giây nếu không thành công hoặc cả khi thành công (để gọn gàng)
+                        setTimeout(() => {
+                           if (formStatus) formStatus.textContent = '';
+                        }, 5000); 
+                       
+                    });
+                });
+            } else {
+                console.error("Could not find form elements for AJAX submission."); // Debug log
+            }
+            // === HẾT SCRIPT FORM SUBMISSION ===
+
+        }); // Đóng DOMContentLoaded
     </script>
 </body>
 </html>
-
-
 
