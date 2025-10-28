@@ -7,6 +7,8 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- THÊM MỚI: Thư viện canvas-confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         body {
@@ -129,6 +131,15 @@
         .suggestion-item .status.unavailable {
             color: #dc3545;
         }
+        /* Style cho nút đăng ký trong gợi ý */
+        .suggestion-item .open-register-modal {
+            background: none;
+            border: none;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+        }
+
 
         /* General Sections */
         .section-title {
@@ -324,6 +335,28 @@
           cursor: pointer;
         }
         /* --- HẾT CSS MODAL --- */
+
+        /* THÊM MỚI: CSS cho thông báo thành công */
+        #success-message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #28a745;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 2000;
+            display: none; /* Ẩn ban đầu */
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        #success-message.show {
+            display: block;
+            opacity: 1;
+        }
+
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -670,12 +703,15 @@
         </a>
     </div>
 
-    <!-- THÊM MỚI: Modal Đăng Ký Tư Vấn -->
+    <!-- Modal Đăng Ký Tư Vấn -->
     <div id="registerModal" class="modal">
         <div class="modal-content">
             <span class="close-btn close-register-modal">&times;</span>
             <h2>Đăng ký tư vấn miễn phí</h2>
-            <form action="https://formspree.io/f/xldojlkn" method="POST" class="mt-6 space-y-6">
+            <!-- THÊM MỚI: Thêm id="registrationForm" -->
+            <form id="registrationForm" action="https://formspree.io/f/xldojlkn" method="POST" class="mt-6 space-y-6">
+                <!-- THÊM MỚI: Thêm trường ẩn để Formspree biết đây là AJAX -->
+                <input type="hidden" name="_gotcha"> 
                 <!-- Họ tên và SĐT -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -727,10 +763,11 @@
                         <textarea id="modal_message" name="Nội dung thêm" rows="4" class="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md" placeholder="Bạn có yêu cầu gì thêm..."></textarea>
                     </div>
                 </div>
-
+                 <!-- THÊM MỚI: Thêm div để hiển thị trạng thái form -->
+                <div id="form-status" class="text-center text-sm"></div>
                 <!-- Nút gửi -->
                 <div class="text-right">
-                    <button type="submit" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <button type="submit" id="submitButton" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
                         <i data-lucide="send" class="mr-2 -ml-1 h-5 w-5"></i>
                         Gửi đăng ký
                     </button>
@@ -740,6 +777,10 @@
     </div>
     <!-- HẾT MODAL -->
     
+    <!-- THÊM MỚI: Div cho thông báo thành công -->
+    <div id="success-message">
+        Đăng ký thành công! Cảm ơn bạn.
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -788,6 +829,7 @@
             const domainInput = document.getElementById('domainInput');
             const searchDomainButton = document.getElementById('searchDomainButton');
             const suggestionResults = document.getElementById('suggestionResults');
+            const modalMessageTextarea = document.getElementById('modal_message'); // Thêm: Lấy textarea
 
             // Danh sách các đuôi tên miền và giá tương ứng (tạm thời để demo)
             const domainExtensions = [
@@ -803,14 +845,14 @@
                 { ext: '.net.vn', price: '691.000đ', type: 'vn' },
                 { ext: '.me', price: '691.200đ', type: 'qt' },
                 { ext: '.info.vn', price: '397.000đ', type: 'vn' },
-                { ext: '.store', price: '250.000đ', type: 'qt' }, // Thêm một vài gợi ý khác
+                { ext: '.store', price: '250.000đ', type: 'qt' }, 
                 { ext: '.online', price: '180.000đ', type: 'qt' },
             ];
 
             if(searchDomainButton && domainInput && suggestionResults) {
                 searchDomainButton.addEventListener('click', () => {
-                    const baseDomain = domainInput.value.trim().toLowerCase().replace(/\s+/g, '-'); // Thay khoảng trắng bằng gạch nối
-                    suggestionResults.innerHTML = ''; // Xóa kết quả cũ
+                    const baseDomain = domainInput.value.trim().toLowerCase().replace(/\s+/g, '-'); 
+                    suggestionResults.innerHTML = ''; 
                     suggestionResults.classList.remove('hidden');
 
                     if (baseDomain === '') {
@@ -818,12 +860,10 @@
                         return;
                     }
 
-                    // Hiển thị loading...
                     suggestionResults.innerHTML = '<p class="text-center text-gray-500">Đang tìm kiếm...</p>';
 
-                    // Giả lập độ trễ khi gọi API
                     setTimeout(() => {
-                        suggestionResults.innerHTML = ''; // Xóa loading
+                        suggestionResults.innerHTML = ''; 
                         const results = [];
                         domainExtensions.forEach(extInfo => {
                             const fullDomain = baseDomain + extInfo.ext;
@@ -840,6 +880,7 @@
                             results.forEach(item => {
                                 const div = document.createElement('div');
                                 div.className = 'suggestion-item';
+                                // Thêm: data-domain attribute vào nút đăng ký
                                 div.innerHTML = `
                                     <span>${item.domain}</span>
                                     <div>
@@ -847,17 +888,16 @@
                                         <span class="status ${item.available ? 'available' : 'unavailable'}">
                                             ${item.available ? 'Đang có' : 'Đã đăng ký'}
                                         </span>
-                                        ${item.available ? '<button class="open-register-modal ml-2 text-indigo-600 hover:text-indigo-800 text-sm font-medium">Đăng ký</button>' : ''}
+                                        ${item.available ? `<button data-domain="${item.domain}" class="open-register-modal ml-2 text-indigo-600 hover:text-indigo-800 text-sm font-medium">Đăng ký</button>` : ''}
                                     </div>
                                 `;
                                 suggestionResults.appendChild(div);
                             });
-                            // Gắn lại sự kiện cho các nút đăng ký mới được tạo
                             attachModalOpenListeners(); 
                         } else {
                             suggestionResults.innerHTML = '<p class="text-center text-gray-500">Không tìm thấy gợi ý nào cho tên miền này.</p>';
                         }
-                    }, 500); // Giả lập 0.5 giây độ trễ
+                    }, 500); 
 
                 });
             }
@@ -865,46 +905,137 @@
 
             // === SCRIPT MỞ/ĐÓNG MODAL ĐĂNG KÝ ===
             const registerModal = document.getElementById('registerModal');
-            const openModalButtons = document.querySelectorAll('.open-register-modal');
             const closeModalButtons = document.querySelectorAll('.close-register-modal');
+            const successMessage = document.getElementById('success-message');
 
-            function openModal() {
+            // Cập nhật: Hàm openModal nhận thêm tham số domain
+            function openModal(domainToRegister = null) {
                 if (registerModal) {
+                    // Thêm: Kiểm tra nếu có domainToRegister thì điền vào textarea
+                    if (domainToRegister && modalMessageTextarea) {
+                        modalMessageTextarea.value = `Tôi muốn đăng ký tên miền: ${domainToRegister}`;
+                    } else if (modalMessageTextarea) {
+                        modalMessageTextarea.value = ''; // Xóa nội dung nếu mở từ nút chung
+                    }
                     registerModal.style.display = 'block';
-                    lucide.createIcons(); // Kích hoạt icon (nếu có trong modal)
+                    lucide.createIcons(); 
                 }
             }
 
             function closeModal() {
                  if (registerModal) {
                     registerModal.style.display = 'none';
+                    // Thêm: Xóa nội dung textarea khi đóng modal
+                    if (modalMessageTextarea) {
+                        modalMessageTextarea.value = '';
+                    }
                 }
             }
             
-            // Hàm để gắn listener mở modal (cần gọi lại khi tạo nút mới)
+            // Cập nhật: Hàm attachModalOpenListeners
             function attachModalOpenListeners() {
                  document.querySelectorAll('.open-register-modal').forEach(button => {
-                    // Xóa listener cũ trước khi thêm mới để tránh trùng lặp
-                    button.removeEventListener('click', openModal); 
-                    button.addEventListener('click', openModal);
+                    // Xóa listener cũ trước khi thêm mới
+                    const oldClickHandler = button.clickHandler; // Lưu trữ listener cũ (nếu có)
+                    if (oldClickHandler) {
+                        button.removeEventListener('click', oldClickHandler);
+                    }
+                    
+                    // Tạo listener mới
+                    const newClickHandler = (event) => {
+                        const domain = event.target.dataset.domain; // Lấy domain từ data attribute
+                        openModal(domain); // Truyền domain vào hàm openModal
+                    };
+
+                    button.addEventListener('click', newClickHandler);
+                    button.clickHandler = newClickHandler; // Lưu trữ listener mới để có thể xóa sau
                 });
             }
 
-            // Gắn listener lần đầu
-            attachModalOpenListeners();
+            attachModalOpenListeners(); // Gắn listener lần đầu
 
-            // Gắn listener đóng modal
             closeModalButtons.forEach(button => {
                 button.addEventListener('click', closeModal);
             });
 
-            // Đóng modal khi click bên ngoài
             window.addEventListener('click', (event) => {
                 if (event.target == registerModal) {
                     closeModal();
                 }
             });
             // === HẾT SCRIPT MODAL ===
+
+            // === SCRIPT XỬ LÝ FORM SUBMISSION VÀ PHÁO HOA ===
+            const form = document.getElementById('registrationForm');
+            const formStatus = document.getElementById('form-status');
+            const submitButton = document.getElementById('submitButton');
+
+            if (form && formStatus && submitButton) {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault(); 
+                    
+                    const formData = new FormData(form);
+                    submitButton.disabled = true; 
+                    formStatus.textContent = 'Đang gửi...';
+                    formStatus.className = 'text-center text-sm text-gray-500';
+
+                    fetch(form.action, {
+                        method: form.method,
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    }).then(response => {
+                        if (response.ok) {
+                            formStatus.textContent = 'Gửi thành công!';
+                            formStatus.className = 'text-center text-sm text-green-600';
+                            form.reset(); 
+                            closeModal(); 
+
+                            if (successMessage) {
+                                successMessage.classList.add('show');
+                                setTimeout(() => {
+                                    successMessage.classList.remove('show');
+                                }, 3000); 
+                            }
+
+                            if (typeof confetti === 'function') {
+                                confetti({
+                                    particleCount: 150, 
+                                    spread: 90,        
+                                    origin: { y: 0.6 } 
+                                });
+                            }
+                            
+                        } else {
+                            response.json().then(data => {
+                                if (Object.hasOwn(data, 'errors')) {
+                                    formStatus.textContent = data["errors"].map(error => error["message"]).join(", ");
+                                } else {
+                                    formStatus.textContent = 'Oops! Có lỗi xảy ra khi gửi form.';
+                                }
+                                formStatus.className = 'text-center text-sm text-red-600';
+                            })
+                        }
+                    }).catch(error => {
+                        formStatus.textContent = 'Oops! Có lỗi xảy ra khi gửi form.';
+                        formStatus.className = 'text-center text-sm text-red-600';
+                        console.error('Form submission error:', error);
+                    }).finally(() => {
+                        submitButton.disabled = false; 
+                        if (!formStatus.classList.contains('text-green-600')) {
+                           setTimeout(() => {
+                               formStatus.textContent = '';
+                           }, 5000);
+                        }
+                         // Thêm: Reset lại nội dung textarea sau khi gửi (kể cả lỗi)
+                        if (modalMessageTextarea) {
+                            modalMessageTextarea.value = '';
+                        }
+                    });
+                });
+            }
+            // === HẾT SCRIPT FORM SUBMISSION ===
 
         });
     </script>
