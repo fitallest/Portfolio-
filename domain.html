@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng Ký Tên Miền Giá Rẻ - Fi.tallest</title>
+    <title>Đăng Ký Tên Miền Giá Rẻ & Gợi Ý Tên Miền - Fi.tallest</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- THÊM MỚI: Thư viện canvas-confetti -->
+    <!-- Thư viện canvas-confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
@@ -65,79 +65,152 @@
             border-radius: 12px;
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            max-width: 800px;
+            max-width: 900px; /* Tăng chiều rộng */
             margin: -80px auto 40px auto; /* Kéo lên trên hero */
             position: relative;
             z-index: 10;
         }
-        .domain-search-input {
+        .search-input-group {
+            display: grid;
+            grid-template-columns: 1fr auto; /* Chia cột input và nút */
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+         .search-input-group > div { /* Cho phép label và input chiếm hết chiều rộng */
+            grid-column: 1 / -1; /* Mặc định chiếm hết */
+        }
+        @media (min-width: 640px) { /* Trên mobile thì xếp chồng */
+             .search-input-group {
+                 grid-template-columns: 1fr 1fr auto; /* 3 cột trên desktop */
+             }
+             .search-input-group > div:nth-child(1) { grid-column: 1 / 2; }
+             .search-input-group > div:nth-child(2) { grid-column: 2 / 3; }
+             .search-input-group button { grid-column: 3 / 4; align-self: end; height: 52px;} /* Căn nút xuống dưới */
+        }
+
+        .search-input {
             width: 100%;
             padding: 15px 20px;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
+            font-size: 1rem; /* Giảm size chữ */
             transition: border-color 0.3s;
         }
-        .domain-search-input:focus {
+        .search-input:focus {
             border-color: #667eea;
             outline: none;
         }
         .domain-search-button {
-            width: 100%;
-            padding: 15px 20px;
+           /* width: 100%; */ /* Bỏ width 100% */
+            padding: 15px 25px;
             background-color: #667eea;
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 1.2rem;
+            font-size: 1.1rem; /* Giảm size chữ */
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
+            white-space: nowrap; /* Ngăn nút xuống dòng */
         }
         .domain-search-button:hover {
             background-color: #5a6fe0;
             transform: translateY(-2px);
         }
-        .suggestion-box {
-            margin-top: 20px;
-            padding: 15px;
+        
+        /* Suggestion Area */
+        .suggestion-results-area {
+            margin-top: 30px;
+            padding: 20px;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
             background-color: #f9f9f9;
-            max-height: 300px;
+            min-height: 100px; /* Chiều cao tối thiểu */
+        }
+        .suggestion-columns {
+            display: grid;
+            grid-template-columns: 1fr; /* Mặc định 1 cột */
+            gap: 30px;
+        }
+         @media (min-width: 768px) { /* 2 cột trên tablet trở lên */
+            .suggestion-columns {
+                grid-template-columns: 1fr 1fr;
+            }
+         }
+        .suggestion-column h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        .suggestion-list {
+            max-height: 400px;
             overflow-y: auto;
+            padding-right: 10px; /* Khoảng trống cho thanh cuộn */
         }
         .suggestion-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
+            padding: 12px 5px;
             border-bottom: 1px dashed #eee;
         }
         .suggestion-item:last-child {
             border-bottom: none;
         }
-        .suggestion-item span {
+        .suggestion-item .domain-name {
             font-weight: 500;
+            word-break: break-all; /* Ngăn tên miền dài làm vỡ layout */
+            margin-right: 10px;
         }
-        .suggestion-item .price {
-            color: #d35400;
-            font-weight: bold;
-        }
-        .suggestion-item .status.available {
-            color: #28a745;
-        }
-        .suggestion-item .status.unavailable {
-            color: #dc3545;
-        }
-        /* Style cho nút đăng ký trong gợi ý */
-        .suggestion-item .open-register-modal {
-            background: none;
-            border: none;
-            padding: 0;
-            margin: 0;
+        .suggestion-item .register-suggestion-btn {
+            background-color: transparent;
+            color: #667eea;
+            border: 1px solid #667eea;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            font-weight: 500;
             cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .suggestion-item .register-suggestion-btn:hover {
+            background-color: #667eea;
+            color: white;
+        }
+
+        /* Tabs cho cột gợi ý */
+        .tabs-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .tab-btn {
+            padding: 8px 15px;
+            background-color: #e0e0e0;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .tab-btn:hover {
+            background-color: #ccc;
+        }
+        .tab-btn.active {
+            background-color: #667eea;
+            color: white;
+        }
+        .tab-content {
+            display: none; /* Ẩn các tab content ban đầu */
+        }
+        .tab-content.active {
+            display: block; /* Hiện tab content active */
         }
 
 
@@ -336,7 +409,7 @@
         }
         /* --- HẾT CSS MODAL --- */
 
-        /* THÊM MỚI: CSS cho thông báo thành công */
+        /* CSS cho thông báo thành công */
         #success-message {
             position: fixed;
             top: 20px;
@@ -397,6 +470,9 @@
             .modal-content {
                 margin: 10% auto;
             }
+            .suggestion-columns { /* Vẫn 1 cột trên tablet nếu cần */
+                 grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 480px) {
@@ -409,7 +485,11 @@
             .domain-search-container {
                 padding: 15px;
             }
-            .domain-search-input, .domain-search-button {
+             .search-input-group {
+                 grid-template-columns: 1fr; /* Xếp chồng hoàn toàn trên mobile */
+             }
+             .search-input-group button { grid-column: 1 / -1; height: auto;} /* Nút chiếm hết và tự động chiều cao */
+            .search-input, .domain-search-button {
                 font-size: 1rem;
                 padding: 12px 15px;
             }
@@ -487,23 +567,50 @@
         
         <section class="hero-section">
             <div class="max-w-7xl mx-auto relative z-1">
-                <h1>Đăng Ký Tên Miền Giá Rẻ Cùng Fi.tallest</h1>
-                <p>Tìm kiếm tên miền hoàn hảo cho doanh nghiệp hoặc dự án cá nhân của bạn ngay hôm nay. Hàng triệu khách hàng đã tin tưởng lựa chọn chúng tôi!</p>
+                <h1>Đăng Ký Tên Miền Giá Rẻ & Gợi Ý Tên Miền</h1>
+                <p>Tìm kiếm tên miền hoàn hảo cho doanh nghiệp hoặc dự án cá nhân của bạn. Nhập từ khóa và ngành nghề để nhận gợi ý độc đáo!</p>
             </div>
         </section>
 
         
         <section class="domain-search-container">
-            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Tìm kiếm tên miền của bạn</h2>
-            <div class="flex flex-col sm:flex-row gap-4 mb-4">
-                <input type="text" id="domainInput" class="domain-search-input flex-grow" placeholder="Nhập tên miền bạn muốn (ví dụ: tencongty)" />
-                <button id="searchDomainButton" class="domain-search-button sm:w-auto">
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Tìm kiếm & Gợi ý tên miền</h2>
+            <!-- Cập nhật: Thêm ô Ngành nghề -->
+            <div class="search-input-group">
+                 <div>
+                    <label for="domainInput" class="block text-sm font-medium text-gray-700 mb-1">Tên miền mong muốn</label>
+                    <input type="text" id="domainInput" class="search-input" placeholder="Nhập tên miền hoặc từ khóa (ví dụ: công ty abc)" />
+                 </div>
+                 <div>
+                    <label for="industryInput" class="block text-sm font-medium text-gray-700 mb-1">Ngành nghề (Tùy chọn)</label>
+                    <input type="text" id="industryInput" class="search-input" placeholder="Ví dụ: nhựa, thời trang, du lịch..." />
+                 </div>
+                <button id="searchDomainButton" class="domain-search-button">
                     Tìm kiếm & Gợi ý
                 </button>
             </div>
-            <div id="suggestionResults" class="suggestion-box hidden">
-                
-                <p class="text-center text-gray-500">Nhập tên miền và nhấn "Tìm kiếm & Gợi ý" để xem các tên miền khả dụng!</p>
+             <!-- Cập nhật: Khu vực hiển thị kết quả -->
+            <div id="suggestionResultsArea" class="suggestion-results-area hidden"> 
+                <div class="suggestion-columns">
+                    <!-- Cột 1: Kết quả trực tiếp -->
+                    <div id="column1Results">
+                        <h3>Kết quả trực tiếp</h3>
+                        <div class="suggestion-list">
+                            <p class="text-center text-gray-500 p-4">Nhập tên miền và nhấn nút để xem kết quả.</p>
+                        </div>
+                    </div>
+                    <!-- Cột 2: Gợi ý thông minh -->
+                    <div id="column2Results">
+                        <h3>Gợi ý khác</h3>
+                        <div class="tabs-container" id="suggestionTabs">
+                            <!-- Tab buttons sẽ được thêm bằng JS -->
+                        </div>
+                        <div class="tab-content-container suggestion-list" id="suggestionTabContent">
+                             <!-- Tab content sẽ được thêm bằng JS -->
+                             <p class="text-center text-gray-500 p-4">Nhập thêm ngành nghề để có gợi ý tốt hơn.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -707,12 +814,12 @@
     <div id="registerModal" class="modal">
         <div class="modal-content">
             <span class="close-btn close-register-modal">&times;</span>
-            <h2>Đăng ký tư vấn miễn phí</h2>
-            <!-- THÊM MỚI: Thêm id="registrationForm" -->
+            <h2>Đăng ký tư vấn tên miền</h2> <!-- Cập nhật tiêu đề modal -->
+            
             <form id="registrationForm" action="https://formspree.io/f/xldojlkn" method="POST" class="mt-6 space-y-6">
-                <!-- THÊM MỚI: Thêm trường ẩn để Formspree biết đây là AJAX -->
+                
                 <input type="hidden" name="_gotcha"> 
-                <!-- Họ tên và SĐT -->
+                
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="modal_name" class="block text-sm font-medium text-gray-700">Họ và tên</label>
@@ -730,46 +837,22 @@
                     </div>
                 </div>
 
-                <!-- Dịch vụ quan tâm -->
-                <div>
-                    <fieldset>
-                        <legend class="text-base font-medium text-gray-900">Dịch vụ bạn quan tâm</legend>
-                        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
-                            <div class="flex items-center">
-                                <input id="modal_service_web" name="Tư vấn Web" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                <label for="modal_service_web" class="ml-3 block text-sm font-medium text-gray-700">Tư vấn Web</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input id="modal_service_app" name="Tư vấn App" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                <label for="modal_service_app" class="ml-3 block text-sm font-medium text-gray-700">Tư vấn App</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input id="modal_service_hosting" name="Hosting" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                <label for="modal_service_hosting" class="ml-3 block text-sm font-medium text-gray-700">Hosting</label>
-                            </div>
-                            <div class="flex items-center">
-                                <!-- Mặc định tích chọn Tên miền -->
-                                <input id="modal_service_domain" name="Tên miền" type="checkbox" checked class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                <label for="modal_service_domain" class="ml-3 block text-sm font-medium text-gray-700">Tên miền</label>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
+                <!-- Bỏ fieldset Dịch vụ quan tâm -->
 
-                <!-- Nội dung thêm -->
+                <!-- Nội dung thêm (sẽ tự động điền tên miền) -->
                 <div>
-                    <label for="modal_message" class="block text-sm font-medium text-gray-700">Nội dung thêm</label>
+                    <label for="modal_message" class="block text-sm font-medium text-gray-700">Nội dung yêu cầu</label>
                     <div class="mt-1">
-                        <textarea id="modal_message" name="Nội dung thêm" rows="4" class="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md" placeholder="Bạn có yêu cầu gì thêm..."></textarea>
+                        <textarea id="modal_message" name="Nội dung thêm" rows="4" class="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md" placeholder="Ví dụ: Tôi muốn đăng ký tên miền abc.com"></textarea>
                     </div>
                 </div>
-                 <!-- THÊM MỚI: Thêm div để hiển thị trạng thái form -->
+                 
                 <div id="form-status" class="text-center text-sm"></div>
-                <!-- Nút gửi -->
+                
                 <div class="text-right">
                     <button type="submit" id="submitButton" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
                         <i data-lucide="send" class="mr-2 -ml-1 h-5 w-5"></i>
-                        Gửi đăng ký
+                        Gửi yêu cầu đăng ký
                     </button>
                 </div>
             </form>
@@ -777,47 +860,35 @@
     </div>
     <!-- HẾT MODAL -->
     
-    <!-- THÊM MỚI: Div cho thông báo thành công -->
+    
     <div id="success-message">
-        Đăng ký thành công! Cảm ơn bạn.
+        Yêu cầu đã được gửi! Chúng tôi sẽ liên hệ lại sớm.
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons(); // Khởi tạo Lucide Icons
+            lucide.createIcons(); 
 
             // === SCRIPT MENU MOBILE ===
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
-          
-            if (mobileMenuButton && mobileMenu) {
-                const mobileMenuIcon = mobileMenuButton.querySelector('i');
-
+            if (mobileMenuButton && mobileMenu) { /* ... (giữ nguyên code menu) ... */ 
+                 const mobileMenuIcon = mobileMenuButton.querySelector('i');
                 mobileMenuButton.addEventListener('click', () => {
                     const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
                     mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
                     mobileMenu.classList.toggle('hidden');
-                    
                     if (mobileMenuIcon) {
-                        if (isExpanded) {
-                            mobileMenuIcon.setAttribute('data-lucide', 'menu');
-                        } else {
-                            mobileMenuIcon.setAttribute('data-lucide', 'x');
-                        }
+                        mobileMenuIcon.setAttribute('data-lucide', isExpanded ? 'menu' : 'x');
                     }
-                    lucide.createIcons(); // Tạo lại icon
+                    lucide.createIcons(); 
                 });
-
-                // Đóng menu khi click link trên mobile
                 document.querySelectorAll('#mobile-menu a').forEach(link => {
                     link.addEventListener('click', () => {
-                        // Chỉ đóng nếu click vào link anchor (#) hoặc link trang khác
-                        if (link.href && (link.href.includes('#') || !link.href.includes('domain.html'))) { 
+                        if (link.href && (link.href.includes('#') || !link.href.includes(window.location.pathname.split('/').pop()))) {
                             mobileMenuButton.setAttribute('aria-expanded', 'false');
                             mobileMenu.classList.add('hidden');
-                            if (mobileMenuIcon) {
-                                mobileMenuIcon.setAttribute('data-lucide', 'menu');
-                            }
+                             if (mobileMenuIcon) mobileMenuIcon.setAttribute('data-lucide', 'menu');
                             lucide.createIcons();
                         }
                     });
@@ -827,77 +898,253 @@
 
             // === SCRIPT GỢI Ý TÊN MIỀN ===
             const domainInput = document.getElementById('domainInput');
+            const industryInput = document.getElementById('industryInput'); // Thêm input ngành nghề
             const searchDomainButton = document.getElementById('searchDomainButton');
-            const suggestionResults = document.getElementById('suggestionResults');
-            const modalMessageTextarea = document.getElementById('modal_message'); // Thêm: Lấy textarea
+            const suggestionResultsArea = document.getElementById('suggestionResultsArea');
+            const col1ResultsDiv = document.getElementById('column1Results').querySelector('.suggestion-list');
+            const col2TabsDiv = document.getElementById('suggestionTabs');
+            const col2ContentDiv = document.getElementById('suggestionTabContent');
+            const modalMessageTextarea = document.getElementById('modal_message'); 
 
-            // Danh sách các đuôi tên miền và giá tương ứng (tạm thời để demo)
-            const domainExtensions = [
-                { ext: '.com', price: '366.120đ', type: 'qt' },
-                { ext: '.vn', price: '820.000đ', type: 'vn' },
-                { ext: '.net', price: '415.800đ', type: 'qt' },
-                { ext: '.com.vn', price: '691.000đ', type: 'vn' },
-                { ext: '.info', price: '680.400đ', type: 'qt' },
-                { ext: '.edu.vn', price: '397.000đ', type: 'vn' },
-                { ext: '.org', price: '405.000đ', type: 'qt' },
-                { ext: '.gov.vn', price: '397.000đ', type: 'vn' },
-                { ext: '.biz', price: '583.200đ', type: 'qt' },
-                { ext: '.net.vn', price: '691.000đ', type: 'vn' },
-                { ext: '.me', price: '691.200đ', type: 'qt' },
-                { ext: '.info.vn', price: '397.000đ', type: 'vn' },
-                { ext: '.store', price: '250.000đ', type: 'qt' }, 
-                { ext: '.online', price: '180.000đ', type: 'qt' },
-            ];
+            // Hàm xóa dấu tiếng Việt
+            function removeAccents(str) {
+              return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D");
+            }
 
-            if(searchDomainButton && domainInput && suggestionResults) {
+            // Hàm xử lý từ khóa: xóa dấu, thay khoảng trắng/ký tự đặc biệt bằng '-', xóa dấu '-' thừa
+            function processKeyword(input) {
+                if (!input) return '';
+                let processed = removeAccents(input.trim().toLowerCase());
+                processed = processed.replace(/[^a-z0-9\-\.]/g, '-'); // Chỉ giữ chữ, số, dấu chấm, dấu gạch nối
+                processed = processed.replace(/-+/g, '-'); // Thay nhiều dấu -- thành 1 dấu -
+                processed = processed.replace(/^-+|-+$/g, ''); // Xóa dấu - ở đầu/cuối
+                return processed;
+            }
+
+            // Danh sách đuôi tên miền phổ biến
+            const commonTLDs = ['.com', '.vn', '.net', '.com.vn', '.info', '.org', '.store', '.online'];
+            const vnTLDs = ['.vn', '.com.vn', '.net.vn', '.info.vn', '.edu.vn', '.gov.vn']; // Để phân loại VN
+
+            // Từ khóa ngành nghề đơn giản (ví dụ)
+            const industryKeywords = {
+                'nhua': ['plastic', 'poly'],
+                'thoi trang': ['fashion', 'style', 'boutique', 'shop'],
+                'du lich': ['travel', 'tour', 'booking'],
+                'xay dung': ['construction', 'build', 'decor'],
+                'giao duc': ['edu', 'school', 'academy'],
+                'bat dong san': ['real', 'land', 'property', 'bds'],
+                'noi that': ['interior', 'decor', 'furniture'],
+                // Thêm các ngành khác nếu cần
+            };
+
+            // Hàm tạo các gợi ý thông minh
+            function generateSmartSuggestions(keyword, industry) {
+                const suggestions = new Set(); // Dùng Set để tránh trùng lặp
+                const industryProcessed = processKeyword(industry);
+
+                // 1. Keyword gốc + TLDs
+                commonTLDs.forEach(tld => suggestions.add(keyword + tld));
+
+                // 2. Keyword + Ngành (tiếng Anh nếu có)
+                if (industryProcessed) {
+                    const industryEN = industryKeywords[industryProcessed] || [industryProcessed]; // Lấy từ điển hoặc dùng từ gốc
+                    industryEN.forEach(indKey => {
+                        commonTLDs.forEach(tld => {
+                            suggestions.add(keyword + indKey + tld);
+                            suggestions.add(keyword + '-' + indKey + tld);
+                        });
+                    });
+                     commonTLDs.forEach(tld => suggestions.add(industryProcessed + keyword + tld)); // Ngành + Keyword
+                }
+
+                // 3. Thêm hậu tố/tiền tố phổ biến
+                ['vn', 'sg', 'hcm', 'hanoi', 'group', 'global', 'tech', 'solution', 'shop', 'store'].forEach(suffix => {
+                     commonTLDs.forEach(tld => suggestions.add(keyword + suffix + tld));
+                });
+                 ['the', 'my', 'best', 'top'].forEach(prefix => {
+                     commonTLDs.forEach(tld => suggestions.add(prefix + keyword + tld));
+                 });
+
+                // Loại bỏ những gợi ý trùng với keyword gốc + tld đã có ở cột 1 (hoặc không cần thiết nếu cột 1 đủ)
+                // Lọc bỏ các tên miền không hợp lệ (ví dụ: có dấu '.' ở giữa ngoài phần TLD)
+                const validSuggestions = Array.from(suggestions).filter(domain => {
+                    const parts = domain.split('.');
+                    return parts.length >= 2 && parts[0] !== '' && parts[parts.length -1] !== '';
+                     // Kiểm tra thêm nếu cần: parts.slice(0, -1).join('.').indexOf('.') === -1
+                });
+
+                return validSuggestions;
+            }
+
+            // Hàm hiển thị kết quả
+            function displayResults(keyword, industry, userTLD) {
+                col1ResultsDiv.innerHTML = ''; // Xóa cột 1 cũ
+                col2TabsDiv.innerHTML = ''; // Xóa tabs cũ
+                col2ContentDiv.innerHTML = ''; // Xóa content cũ
+
+                let col1Domains = [];
+
+                // Ưu tiên tên miền người dùng nhập nếu có TLD hợp lệ
+                if (userTLD) {
+                     col1Domains.push(keyword + userTLD);
+                }
+
+                // Thêm các TLD phổ biến khác vào cột 1, tránh trùng lặp
+                commonTLDs.forEach(tld => {
+                    const domain = keyword + tld;
+                    // Tránh trùng .com.com, .vn.vn và tránh trùng với tên miền user đã nhập
+                    if (tld !== userTLD && !domain.endsWith(tld + tld) && col1Domains.indexOf(domain) === -1) {
+                         col1Domains.push(domain);
+                    }
+                });
+
+                // Hiển thị cột 1
+                if (col1Domains.length > 0) {
+                     col1Domains.forEach(domain => {
+                         const div = document.createElement('div');
+                         div.className = 'suggestion-item';
+                         div.innerHTML = `
+                            <span class="domain-name">${domain}</span>
+                            <button data-domain="${domain}" class="register-suggestion-btn open-register-modal">Đăng ký</button>
+                         `;
+                         col1ResultsDiv.appendChild(div);
+                     });
+                 } else {
+                     col1ResultsDiv.innerHTML = '<p class="text-center text-gray-500 p-4">Không có kết quả trực tiếp.</p>';
+                 }
+
+
+                // Tạo gợi ý cột 2
+                const smartSuggestions = generateSmartSuggestions(keyword, industry);
+                const suggestionsByTLD = {};
+
+                smartSuggestions.forEach(domain => {
+                     // Bỏ qua nếu đã có trong cột 1
+                    if(col1Domains.includes(domain)) return;
+
+                    let tldGroup = 'Khác'; // Nhóm mặc định
+                    for (const tld of commonTLDs.slice().reverse()) { // Check từ dài đến ngắn (.com.vn trước .vn)
+                        if (domain.endsWith(tld)) {
+                            tldGroup = tld;
+                            break;
+                        }
+                    }
+                     // Phân nhóm VN riêng nếu cần
+                     // if (vnTLDs.some(vnTld => domain.endsWith(vnTld))) {
+                     //     tldGroup = '.VN';
+                     // } else if (domain.endsWith('.com')) {
+                     //     tldGroup = '.COM';
+                     // } // ... thêm các nhóm khác
+
+                    if (!suggestionsByTLD[tldGroup]) {
+                        suggestionsByTLD[tldGroup] = [];
+                    }
+                    suggestionsByTLD[tldGroup].push(domain);
+                });
+
+                 // Hiển thị cột 2 (Tabs và Content)
+                 const sortedTLDGroups = Object.keys(suggestionsByTLD).sort((a, b) => {
+                     // Ưu tiên .com, .vn lên đầu
+                     if (a === '.com') return -1; if (b === '.com') return 1;
+                     if (a === '.vn') return -1; if (b === '.vn') return 1;
+                     if (a === '.com.vn') return -1; if (b === '.com.vn') return 1;
+                     return a.localeCompare(b); // Sắp xếp theo alphabet
+                 });
+
+                 if(sortedTLDGroups.length > 0) {
+                    sortedTLDGroups.forEach((tldGroup, index) => {
+                         // Tạo Tab Button
+                         const tabButton = document.createElement('button');
+                         tabButton.className = `tab-btn ${index === 0 ? 'active' : ''}`;
+                         tabButton.dataset.tab = `tab-${tldGroup.replace('.', '')}`; // ID cho content
+                         tabButton.textContent = tldGroup.toUpperCase();
+                         col2TabsDiv.appendChild(tabButton);
+
+                         // Tạo Tab Content Div
+                         const tabContent = document.createElement('div');
+                         tabContent.id = `tab-${tldGroup.replace('.', '')}`;
+                         tabContent.className = `tab-content ${index === 0 ? 'active' : ''}`;
+                         
+                         suggestionsByTLD[tldGroup].forEach(domain => {
+                             const div = document.createElement('div');
+                             div.className = 'suggestion-item';
+                             div.innerHTML = `
+                                <span class="domain-name">${domain}</span>
+                                <button data-domain="${domain}" class="register-suggestion-btn open-register-modal">Đăng ký</button>
+                             `;
+                             tabContent.appendChild(div);
+                         });
+                         col2ContentDiv.appendChild(tabContent);
+                    });
+
+                    // Thêm sự kiện chuyển tab
+                    col2TabsDiv.querySelectorAll('.tab-btn').forEach(button => {
+                         button.addEventListener('click', () => {
+                             // Bỏ active tất cả
+                             col2TabsDiv.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                             col2ContentDiv.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                             // Active cái được click
+                             button.classList.add('active');
+                             const targetContent = document.getElementById(button.dataset.tab);
+                             if (targetContent) targetContent.classList.add('active');
+                         });
+                     });
+
+                 } else {
+                     col2ContentDiv.innerHTML = '<p class="text-center text-gray-500 p-4">Không có gợi ý nào khác.</p>';
+                 }
+
+
+                // Gắn lại sự kiện mở modal cho tất cả các nút đăng ký mới
+                attachModalOpenListeners();
+            }
+
+
+            if(searchDomainButton && domainInput && suggestionResultsArea) {
                 searchDomainButton.addEventListener('click', () => {
-                    const baseDomain = domainInput.value.trim().toLowerCase().replace(/\s+/g, '-'); 
-                    suggestionResults.innerHTML = ''; 
-                    suggestionResults.classList.remove('hidden');
-
-                    if (baseDomain === '') {
-                        suggestionResults.innerHTML = '<p class="text-center text-gray-500">Vui lòng nhập tên miền bạn muốn tìm kiếm.</p>';
+                    const rawInput = domainInput.value;
+                    const industry = industryInput.value;
+                    
+                    if (!rawInput.trim()) {
+                        suggestionResultsArea.classList.remove('hidden');
+                        col1ResultsDiv.innerHTML = '<p class="text-center text-gray-500 p-4">Vui lòng nhập tên miền hoặc từ khóa.</p>';
+                        col2TabsDiv.innerHTML = '';
+                        col2ContentDiv.innerHTML = '<p class="text-center text-gray-500 p-4"></p>';
                         return;
                     }
 
-                    suggestionResults.innerHTML = '<p class="text-center text-gray-500">Đang tìm kiếm...</p>';
+                    // Tách tên miền và TLD nếu người dùng nhập cả hai
+                    let baseKeywordRaw = rawInput;
+                    let userTLD = null;
+                    const lastDotIndex = rawInput.lastIndexOf('.');
+                    if (lastDotIndex > 0 && lastDotIndex < rawInput.length - 1) {
+                         const potentialTLD = rawInput.substring(lastDotIndex).toLowerCase();
+                         // Kiểm tra xem có phải là TLD phổ biến không (để tránh xử lý sai ví dụ abc.co.ltd)
+                         if (commonTLDs.includes(potentialTLD) || vnTLDs.includes(potentialTLD)) {
+                            userTLD = potentialTLD;
+                            baseKeywordRaw = rawInput.substring(0, lastDotIndex);
+                         }
+                    }
 
+                    const processedKeyword = processKeyword(baseKeywordRaw);
+
+                    if (!processedKeyword) {
+                        suggestionResultsArea.classList.remove('hidden');
+                        col1ResultsDiv.innerHTML = '<p class="text-center text-gray-500 p-4">Từ khóa không hợp lệ.</p>';
+                         col2TabsDiv.innerHTML = '';
+                        col2ContentDiv.innerHTML = '<p class="text-center text-gray-500 p-4"></p>';
+                        return;
+                    }
+                    
+                    suggestionResultsArea.classList.remove('hidden'); // Hiển thị khu vực kết quả
+                    col1ResultsDiv.innerHTML = '<p class="text-center text-gray-500 p-4">Đang tải...</p>'; // Loading
+                    col2TabsDiv.innerHTML = '';
+                    col2ContentDiv.innerHTML = '<p class="text-center text-gray-500 p-4">Đang tải...</p>'; // Loading
+
+                    // Giả lập độ trễ (nếu cần API thực tế thì thay thế chỗ này)
                     setTimeout(() => {
-                        suggestionResults.innerHTML = ''; 
-                        const results = [];
-                        domainExtensions.forEach(extInfo => {
-                            const fullDomain = baseDomain + extInfo.ext;
-                            const isAvailable = Math.random() > 0.5 || (extInfo.ext === '.com' && Math.random() > 0.8) || (extInfo.ext === '.vn' && Math.random() > 0.7);
-                            
-                            results.push({
-                                domain: fullDomain,
-                                price: extInfo.price,
-                                available: isAvailable
-                            });
-                        });
-
-                        if (results.length > 0) {
-                            results.forEach(item => {
-                                const div = document.createElement('div');
-                                div.className = 'suggestion-item';
-                                // Thêm: data-domain attribute vào nút đăng ký
-                                div.innerHTML = `
-                                    <span>${item.domain}</span>
-                                    <div>
-                                        <span class="price mr-4">${item.price}</span>
-                                        <span class="status ${item.available ? 'available' : 'unavailable'}">
-                                            ${item.available ? 'Đang có' : 'Đã đăng ký'}
-                                        </span>
-                                        ${item.available ? `<button data-domain="${item.domain}" class="open-register-modal ml-2 text-indigo-600 hover:text-indigo-800 text-sm font-medium">Đăng ký</button>` : ''}
-                                    </div>
-                                `;
-                                suggestionResults.appendChild(div);
-                            });
-                            attachModalOpenListeners(); 
-                        } else {
-                            suggestionResults.innerHTML = '<p class="text-center text-gray-500">Không tìm thấy gợi ý nào cho tên miền này.</p>';
-                        }
-                    }, 500); 
+                         displayResults(processedKeyword, industry, userTLD);
+                    }, 300); // 0.3 giây
 
                 });
             }
@@ -908,14 +1155,14 @@
             const closeModalButtons = document.querySelectorAll('.close-register-modal');
             const successMessage = document.getElementById('success-message');
 
-            // Cập nhật: Hàm openModal nhận thêm tham số domain
             function openModal(domainToRegister = null) {
                 if (registerModal) {
-                    // Thêm: Kiểm tra nếu có domainToRegister thì điền vào textarea
                     if (domainToRegister && modalMessageTextarea) {
                         modalMessageTextarea.value = `Tôi muốn đăng ký tên miền: ${domainToRegister}`;
                     } else if (modalMessageTextarea) {
-                        modalMessageTextarea.value = ''; // Xóa nội dung nếu mở từ nút chung
+                         // Nếu mở từ nút chung, có thể để trống hoặc ghi "Tư vấn tên miền"
+                        modalMessageTextarea.value = ''; 
+                        modalMessageTextarea.placeholder = 'Bạn cần tư vấn thêm về tên miền nào?';
                     }
                     registerModal.style.display = 'block';
                     lucide.createIcons(); 
@@ -925,34 +1172,30 @@
             function closeModal() {
                  if (registerModal) {
                     registerModal.style.display = 'none';
-                    // Thêm: Xóa nội dung textarea khi đóng modal
                     if (modalMessageTextarea) {
                         modalMessageTextarea.value = '';
+                        modalMessageTextarea.placeholder = 'Ví dụ: Tôi muốn đăng ký tên miền abc.com'; // Reset placeholder
                     }
                 }
             }
             
-            // Cập nhật: Hàm attachModalOpenListeners
             function attachModalOpenListeners() {
                  document.querySelectorAll('.open-register-modal').forEach(button => {
-                    // Xóa listener cũ trước khi thêm mới
-                    const oldClickHandler = button.clickHandler; // Lưu trữ listener cũ (nếu có)
+                    const oldClickHandler = button.clickHandler; 
                     if (oldClickHandler) {
                         button.removeEventListener('click', oldClickHandler);
                     }
-                    
-                    // Tạo listener mới
                     const newClickHandler = (event) => {
-                        const domain = event.target.dataset.domain; // Lấy domain từ data attribute
-                        openModal(domain); // Truyền domain vào hàm openModal
+                        // Cập nhật: Lấy domain từ data attribute hoặc để null
+                        const domain = event.target.dataset.domain || null; 
+                        openModal(domain); 
                     };
-
                     button.addEventListener('click', newClickHandler);
-                    button.clickHandler = newClickHandler; // Lưu trữ listener mới để có thể xóa sau
+                    button.clickHandler = newClickHandler; 
                 });
             }
 
-            attachModalOpenListeners(); // Gắn listener lần đầu
+            attachModalOpenListeners(); 
 
             closeModalButtons.forEach(button => {
                 button.addEventListener('click', closeModal);
@@ -982,9 +1225,7 @@
                     fetch(form.action, {
                         method: form.method,
                         body: formData,
-                        headers: {
-                            'Accept': 'application/json'
-                        }
+                        headers: { 'Accept': 'application/json' }
                     }).then(response => {
                         if (response.ok) {
                             formStatus.textContent = 'Gửi thành công!';
@@ -994,51 +1235,38 @@
 
                             if (successMessage) {
                                 successMessage.classList.add('show');
-                                setTimeout(() => {
-                                    successMessage.classList.remove('show');
-                                }, 3000); 
+                                setTimeout(() => { successMessage.classList.remove('show'); }, 3000); 
                             }
 
                             if (typeof confetti === 'function') {
-                                confetti({
-                                    particleCount: 150, 
-                                    spread: 90,        
-                                    origin: { y: 0.6 } 
-                                });
+                                confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
                             }
                             
                         } else {
                             response.json().then(data => {
-                                if (Object.hasOwn(data, 'errors')) {
-                                    formStatus.textContent = data["errors"].map(error => error["message"]).join(", ");
-                                } else {
-                                    formStatus.textContent = 'Oops! Có lỗi xảy ra khi gửi form.';
-                                }
+                                formStatus.textContent = (data && data.errors) ? data.errors.map(e => e.message).join(", ") : 'Oops! Có lỗi xảy ra.';
                                 formStatus.className = 'text-center text-sm text-red-600';
-                            })
+                            }).catch(() => {
+                                formStatus.textContent = 'Oops! Lỗi xử lý phản hồi.';
+                                formStatus.className = 'text-center text-sm text-red-600';
+                            });
                         }
                     }).catch(error => {
-                        formStatus.textContent = 'Oops! Có lỗi xảy ra khi gửi form.';
+                        console.error('Form submission fetch error:', error); 
+                        formStatus.textContent = 'Oops! Lỗi mạng khi gửi form.';
                         formStatus.className = 'text-center text-sm text-red-600';
-                        console.error('Form submission error:', error);
                     }).finally(() => {
                         submitButton.disabled = false; 
-                        if (!formStatus.classList.contains('text-green-600')) {
-                           setTimeout(() => {
-                               formStatus.textContent = '';
-                           }, 5000);
-                        }
-                         // Thêm: Reset lại nội dung textarea sau khi gửi (kể cả lỗi)
-                        if (modalMessageTextarea) {
-                            modalMessageTextarea.value = '';
-                        }
+                        setTimeout(() => { if (formStatus) formStatus.textContent = ''; }, 5000); 
+                       if (modalMessageTextarea) modalMessageTextarea.value = ''; // Luôn xóa textarea
                     });
                 });
+            } else {
+                console.error("Không tìm thấy các thành phần form cần thiết."); 
             }
             // === HẾT SCRIPT FORM SUBMISSION ===
 
-        });
+        }); // Đóng DOMContentLoaded
     </script>
 </body>
 </html>
-
