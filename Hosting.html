@@ -546,8 +546,10 @@
                     <a href="index.html#about" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Giới thiệu</a>
                     <a href="index.html#services" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Dịch vụ</a>
                     <a href="index.html#projects" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Dự án</a>
-                    <a href="Hosting.html" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Hosting</a>
-                    <a href="Hosting.html" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Tên miền</a>
+                    <!-- Đánh dấu trang hiện tại -->
+                    <a href="Hosting.html" class="text-indigo-600 font-semibold transition duration-150">Hosting</a> 
+                    <!-- Cập nhật link -->
+                    <a href="domain.html" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Tên miền</a> 
                     <a href="Báo Giá Thiết Kế Website Chuyên Nghiệp.html" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Báo Giá</a>
                     <a href="index.html#contact" class="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         Liên hệ ngay
@@ -571,8 +573,10 @@
                 <a href="index.html#about" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Giới thiệu</a>
                 <a href="index.html#services" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Dịch vụ</a>
                 <a href="index.html#projects" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Dự án</a>
-                <a href="Hosting.html" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Hosting</a>
-                <a href="Hosting.html" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Tên miền</a>
+                 <!-- Đánh dấu trang hiện tại -->
+                <a href="Hosting.html" class="text-indigo-600 bg-indigo-50 block px-3 py-2 rounded-md text-base font-medium">Hosting</a>
+                <!-- Cập nhật link -->
+                <a href="domain.html" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Tên miền</a>
                 <a href="Báo Giá Thiết Kế Website Chuyên Nghiệp.html" class="text-gray-500 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Báo Giá</a>
                 <a href="index.html#contact" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">Liên hệ ngay</a>
             </div>
@@ -1416,6 +1420,7 @@
         lucide.createIcons(); 
 
         // 2. === SCRIPT TÍNH TOÁN 8% VAT ===
+        // ... (VAT code remains the same) ...
         function calculateVAT() {
           document.querySelectorAll('.price-year').forEach(el => {
             try {
@@ -1433,10 +1438,10 @@
           });
         }
         calculateVAT();
-        // === HẾT SCRIPT VAT ===
 
 
         // 3. === SCRIPT CHUYỂN TRANG TỔNG QUAN ===
+        // ... (Overview page toggle code remains the same) ...
         const mainContent = document.getElementById('main-content-wrapper');
         const overviewPage = document.getElementById('overview-page-wrapper');
         const showOverviewBtn = document.getElementById('show-overview-btn');
@@ -1458,10 +1463,10 @@
                 document.body.classList.remove('overview-is-open'); // Xóa class để mở khóa cuộn body
             });
         }
-        // === HẾT SCRIPT CHUYỂN TRANG ===
 
 
         // 4. Script cho Tab
+        // ... (Tab switching code remains the same) ...
         document.querySelectorAll('.tab').forEach(tab => {
           tab.addEventListener('click', () => {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1476,7 +1481,8 @@
         });
 
         // 5. Script cho Modal (Popup)
-        document.querySelectorAll('.service-btn').forEach(button => {
+        // ... (Modal open/close code remains the same) ...
+         document.querySelectorAll('.service-btn').forEach(button => {
           button.addEventListener('click', () => {
             const modalId = button.getAttribute('data-modal');
             if(modalId) {
@@ -1487,85 +1493,73 @@
             }
           });
         });
-
-        // 6. Lấy tất cả các nút đóng modal
         document.querySelectorAll('.close-btn').forEach(button => {
           button.addEventListener('click', () => {
             button.closest('.modal').style.display = "none";
           });
         });
-
-        // 7. Đóng modal khi nhấp chuột bên ngoài
         window.addEventListener('click', (event) => {
           if (event.target.classList.contains('modal')) {
             event.target.style.display = "none";
           }
         });
 
+
         // 8. === SCRIPT CHO MIND MAP THU GỌN ===
         const mindMapRoot = document.getElementById('mindMapRoot');
         if(mindMapRoot) {
+            // Logic mở/đóng khi click vào toggle
             mindMapRoot.addEventListener('click', function (e) {
-              // Chỉ chạy khi nhấp vào nút .toggle VÀ nó không phải là .is-leaf
               if (e.target.classList.contains('toggle') && !e.target.classList.contains('is-leaf')) {
                 const toggleBtn = e.target;
-                
-                // Tìm .mind-map-node-container cha
                 const parentNodeContainer = toggleBtn.closest('.mind-map-node-container');
-                
-                // Tìm .mind-map-level con (nằm trong cùng .mind-map-branch)
-                const subLevel = parentNodeContainer.nextElementSibling; // Lấy phần tử kế tiếp
+                const subLevel = parentNodeContainer.nextElementSibling; 
                 
                 if (subLevel && subLevel.classList.contains('mind-map-level')) {
-                  // Bật/tắt lớp 'collapsed' trên .mind-map-level con
                   subLevel.classList.toggle('collapsed');
                   const isCollapsed = subLevel.classList.contains('collapsed');
-                  
-                  // Cập nhật nút toggle (text và class)
                   toggleBtn.textContent = isCollapsed ? '+' : '-';
                   toggleBtn.classList.toggle('is-collapsed', isCollapsed);
-                  
-                  // Cập nhật .mind-map-node-container (để ẩn/hiện đường nối)
                   parentNodeContainer.classList.toggle('is-collapsed', isCollapsed);
                 }
               }
             });
+
+            // CẬP NHẬT: Mặc định thu gọn Cấp 3 trở đi
+            // Thu gọn Cấp 3 (level-3)
+            document.querySelectorAll('.mind-map-level.level-3').forEach(ul => {
+                 ul.classList.add('collapsed'); // <-- THAY ĐỔI: Thêm class collapsed
+
+                 // Tìm .mind-map-node-container cha của nó (là Cấp 2) và cập nhật toggle
+                 const parentNodeContainer = ul.previousElementSibling;
+                 if (parentNodeContainer && parentNodeContainer.classList.contains('mind-map-node-container')) {
+                      const toggleBtn = parentNodeContainer.querySelector('.toggle');
+                      if(toggleBtn && !toggleBtn.classList.contains('is-leaf')) {
+                           toggleBtn.textContent = '+'; // <-- THAY ĐỔI: Đặt là '+'
+                           toggleBtn.classList.add('is-collapsed'); // <-- THAY ĐỔI: Thêm class
+                           parentNodeContainer.classList.add('is-collapsed'); // <-- THAY ĐỔI: Thêm class
+                      }
+                 }
+            });
+
+            // Thu gọn Cấp 4 (nằm trong Cấp 3) - Logic này vẫn đúng
+             document.querySelectorAll('.mind-map-level.level-4').forEach(ul => {
+                 ul.classList.add('collapsed'); 
+                 const parentNodeContainer = ul.previousElementSibling;
+                 if (parentNodeContainer && parentNodeContainer.classList.contains('mind-map-node-container')) {
+                      const toggleBtn = parentNodeContainer.querySelector('.toggle');
+                      if(toggleBtn && !toggleBtn.classList.contains('is-leaf')) {
+                           toggleBtn.textContent = '+';
+                           toggleBtn.classList.add('is-collapsed');
+                           parentNodeContainer.classList.add('is-collapsed');
+                      }
+                 }
+             });
         }
-        
-        // Mặc định thu gọn tất cả các nhánh con cấp 3 trở đi
-        // Cập nhật riêng cho Cấp 3 (level-3)
-        document.querySelectorAll('.mind-map-level.level-3').forEach(ul => {
-             // Mặc định KHÔNG thu gọn Cấp 3
-             ul.classList.remove('collapsed'); 
-
-             // Tìm .mind-map-node-container cha của nó (là Cấp 2)
-             const parentNodeContainer = ul.previousElementSibling;
-             if (parentNodeContainer && parentNodeContainer.classList.contains('mind-map-node-container')) {
-                  const toggleBtn = parentNodeContainer.querySelector('.toggle');
-                  if(toggleBtn && !toggleBtn.classList.contains('is-leaf')) {
-                       toggleBtn.textContent = '-'; // Mặc định là mở
-                       toggleBtn.classList.remove('is-collapsed');
-                       parentNodeContainer.classList.remove('is-collapsed');
-                  }
-             }
-        });
-
-        // Thu gọn Cấp 4 (nằm trong Cấp 3)
-         document.querySelectorAll('.mind-map-level.level-4').forEach(ul => {
-             ul.classList.add('collapsed'); 
-             const parentNodeContainer = ul.previousElementSibling;
-             if (parentNodeContainer && parentNodeContainer.classList.contains('mind-map-node-container')) {
-                  const toggleBtn = parentNodeContainer.querySelector('.toggle');
-                  if(toggleBtn && !toggleBtn.classList.contains('is-leaf')) {
-                       toggleBtn.textContent = '+';
-                       toggleBtn.classList.add('is-collapsed');
-                       parentNodeContainer.classList.add('is-collapsed');
-                  }
-             }
-         });
         // === HẾT SCRIPT MIND MAP ===
         
         // 9. === SCRIPT MENU MOBILE ===
+        // ... (Mobile menu code remains the same) ...
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
       
@@ -1586,11 +1580,31 @@
                 }
                 lucide.createIcons(); // Tạo lại icon
             });
+             // Đóng menu khi click link trên mobile
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    // Cập nhật: Lấy tên file hiện tại
+                    const currentPage = window.location.pathname.split('/').pop() || 'index.html'; // Mặc định là index.html nếu trống
+                    const linkTarget = link.getAttribute('href');
+                    // Kiểm tra xem link có tồn tại không trước khi xử lý
+                    if (!linkTarget) return; 
+                    const linkPage = linkTarget.split('#')[0]; // Lấy phần tên file từ link
+                    const isAnchorLinkOnCurrentPage = linkTarget.startsWith('#');
+
+                    // Chỉ đóng nếu click link anchor (#) trên trang hiện tại hoặc link sang trang KHÁC
+                    if (isAnchorLinkOnCurrentPage || (linkPage && linkPage !== currentPage) ) {
+                        mobileMenuButton.setAttribute('aria-expanded', 'false');
+                        mobileMenu.classList.add('hidden');
+                         if (mobileMenuIcon) mobileMenuIcon.setAttribute('data-lucide', 'menu');
+                        lucide.createIcons();
+                    }
+                });
+            });
         }
-        // === HẾT SCRIPT MENU MOBILE ===
 
     }); // Đóng DOMContentLoaded
   </script>
 
 </body>
 </html>
+
