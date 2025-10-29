@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dự Án Đã Thực Hiện - Fi.tallest</title> <!-- Title mới -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Tailwind gray-50 */
+        }
+         /* Style thêm cho card dự án */
+         .project-card {
+            @apply bg-white rounded-lg shadow-lg overflow-hidden transition duration-300 ease-in-out hover:shadow-xl;
+        }
+        .project-card img {
+             @apply w-full h-48 object-cover group-hover:opacity-80 transition duration-300;
+         }
+         .project-card .content {
+             @apply p-6;
+         }
+         .project-card .category {
+            @apply text-sm text-indigo-600 font-medium mb-1 block;
+         }
+          .project-card h3 {
+             @apply text-xl font-bold text-gray-900 mb-2;
+         }
+         .project-card p {
+              @apply text-base text-gray-600;
+         }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Header & Navbar (Sticky) -->
+    <header class="bg-white/90 sticky top-0 z-50 backdrop-blur-md border-b border-gray-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                     <!-- Link về trang chủ -->
+                    <a href="index.html" class="text-2xl font-bold text-indigo-600"> 
+                        Fi.tallest 
+                    </a>
+                </div>
+                
+                <!-- Menu cho Desktop -->
+                <div class="hidden md:flex md:items-center md:space-x-8">
+                    <a href="index.html#about" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Giới thiệu</a>
+                    <a href="index.html#services" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Dịch vụ</a>
+                    <!-- Đánh dấu trang hiện tại -->
+                    <a href="projects.html" class="text-indigo-600 font-semibold transition duration-150">Dự án</a> 
+                    <a href="Hosting.html" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Hosting</a>
+                    <a href="domain.html" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Tên miền</a>
+                    <a href="Báo Giá Thiết Kế Website Chuyên Nghiệp.html" class="text-gray-500 font-medium hover:text-indigo-600 transition duration-150">Báo Giá</a>
+                    <a href="index.html#contact" class="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Liên hệ ngay
+                    </a>
+                </div>
+                
+                <!-- Nút Menu cho Mobile -->
+                <div class="-mr-2 flex items-center md:hidden">
+                    <button type="button" id="mobile-menu-button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-expanded="false">
+                        <span class="sr-only">Mở menu</span>
+                        <i data-lucide="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Menu Mobile -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html#about" class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Giới thiệu</a>
+                <a href="index.html#services" class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Dịch vụ</a>
+                 <!-- Đánh dấu trang hiện tại -->
+                <a href="projects.html" class="text-indigo-700 bg-indigo-50 block px-3 py-2 rounded-md text-base font-medium">Dự án</a>
+                <a href="Hosting.html" class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Hosting</a>
+                <a href="domain.html" class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Tên miền</a>
+                <a href="Báo Giá Thiết Kế Website Chuyên Nghiệp.html" class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Báo Giá</a>
+                <a href="index.html#contact" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">Liên hệ ngay</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="py-16 md:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-gray-900">Dự Án Nổi Bật</h1>
+                <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Khám phá các dự án website và ứng dụng đa dạng mà tôi đã thực hiện.</p>
+            </div>
+
+            <!-- Lưới dự án -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="project-card group">
+                    <a href="#" class="block">
+                        <img src="https://placehold.co/600x400/e0e7ff/4f46e5?text=Du+An+1" alt="Dự án 1">
+                    </a>
+                    <div class="content">
+                        <span class="category">Website Thương mại điện tử</span>
+                        <h3>Dự án TechStore</h3>
+                        <p>Thiết kế và phát triển website bán lẻ thiết bị công nghệ với giao diện hiện đại, tích hợp thanh toán.</p>
+                    </div>
+                </div>
+                <!-- Project 2 -->
+                 <div class="project-card group">
+                    <a href="#" class="block">
+                        <img src="https://placehold.co/600x400/c7d2fe/4338ca?text=Du+An+2" alt="Dự án 2">
+                    </a>
+                    <div class="content">
+                        <span class="category">Ứng dụng Sức khỏe</span>
+                        <h3>Ứng dụng HealthTrack</h3>
+                        <p>Thiết kế UI/UX cho ứng dụng theo dõi sức khỏe cá nhân, tập trung vào sự đơn giản và dễ sử dụng.</p>
+                    </div>
+                </div>
+                <!-- Project 3 -->
+                <div class="project-card group">
+                    <a href="#" class="block">
+                        <img src="https://placehold.co/600x400/a5b4fc/3730a3?text=Du+An+3" alt="Dự án 3">
+                    </a>
+                    <div class="content">
+                        <span class="category">Website Doanh nghiệp</span>
+                        <h3>Trang chủ Creative Inc.</h3>
+                        <p>Website giới thiệu công ty thiết kế sáng tạo, với nhiều hiệu ứng và animation độc đáo.</p>
+                    </div>
+                </div>
+                 <!-- Project 4 -->
+                 <div class="project-card group">
+                    <a href="#" class="block">
+                        <img src="https://placehold.co/600x400/818cf8/ede9fe?text=Du+An+4" alt="Dự án 4">
+                    </a>
+                    <div class="content">
+                        <span class="category">Landing Page Sự kiện</span>
+                        <h3>Trang Đăng ký Webinar</h3>
+                        <p>Thiết kế landing page tối ưu chuyển đổi cho sự kiện trực tuyến, tích hợp form đăng ký.</p>
+                    </div>
+                </div>
+                 <!-- Project 5 -->
+                 <div class="project-card group">
+                    <a href="#" class="block">
+                        <img src="https://placehold.co/600x400/6366f1/eef2ff?text=Du+An+5" alt="Dự án 5">
+                    </a>
+                    <div class="content">
+                        <span class="category">Website Tin tức/Blog</span>
+                        <h3>Blog Chia sẻ Kiến thức</h3>
+                        <p>Xây dựng trang blog cá nhân với giao diện sạch sẽ, dễ đọc, tối ưu SEO cho bài viết.</p>
+                    </div>
+                </div>
+                 <!-- Project 6 -->
+                 <div class="project-card group">
+                    <a href="#" class="block">
+                        <img src="https://placehold.co/600x400/4f46e5/ddd6fe?text=Du+An+6" alt="Dự án 6">
+                    </a>
+                    <div class="content">
+                        <span class="category">Ứng dụng Đặt lịch</span>
+                        <h3>App Đặt lịch Spa</h3>
+                        <p>Thiết kế giao diện người dùng cho ứng dụng đặt lịch hẹn spa, đơn giản hóa quy trình booking.</p>
+                    </div>
+                </div>
+                 <!-- Project 7 (Placeholder) -->
+                  <div class="project-card group">
+                    <a href="#" class="block">
+                        <img src="https://placehold.co/600x400/312e81/c7d2fe?text=Du+An+7" alt="Dự án 7">
+                    </a>
+                    <div class="content">
+                        <span class="category">Website Giáo dục</span>
+                        <h3>Nền tảng Học trực tuyến</h3>
+                        <p>Giao diện cho nền tảng e-learning với các khóa học video, bài kiểm tra và theo dõi tiến độ.</p>
+                    </div>
+                </div>
+                 <!-- Project 8 (Placeholder) -->
+                  <div class="project-card group">
+                    <a href="#" class="block">
+                        <img src="https://placehold.co/600x400/4338ca/d1d5db?text=Du+An+8" alt="Dự án 8">
+                    </a>
+                    <div class="content">
+                        <span class="category">Website Bất động sản</span>
+                        <h3>Trang tìm kiếm Nhà đất</h3>
+                        <p>Thiết kế website bất động sản với bộ lọc tìm kiếm nâng cao, bản đồ tương tác và thông tin chi tiết.</p>
+                    </div>
+                </div>
+                 <!-- Project 9 (Placeholder) -->
+                  <div class="project-card group">
+                    <a href="#" class="block">
+                        <img src="https://placehold.co/600x400/a78bfa/f3e8ff?text=Du+An+9" alt="Dự án 9">
+                    </a>
+                    <div class="content">
+                        <span class="category">Portfolio Cá nhân</span>
+                        <h3>Trang Portfolio Nhiếp ảnh gia</h3>
+                        <p>Thiết kế trang portfolio tập trung vào hình ảnh, hiển thị các bộ sưu tập ảnh một cách ấn tượng.</p>
+                    </div>
+                </div>
+
+            </div> <!-- Hết grid -->
+
+             <!-- Optional: Pagination or Load More button could be added here later -->
+             <!-- <div class="mt-16 text-center">
+                 <button class="px-6 py-3 bg-indigo-600 text-white font-medium rounded-md shadow hover:bg-indigo-700 transition">
+                     Tải thêm dự án
+                 </button>
+             </div> -->
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-base text-gray-400">&copy; 2025 Fi.tallest. Mọi quyền được bảo lưu.</p>
+        </div>
+    </footer>
+
+    <!-- Floating Contact Buttons -->
+    <div class="fixed right-4 bottom-4 md:top-1/2 md:-translate-y-1/2 z-[1000] flex flex-col gap-3">
+        <a href="tel:0909876817" 
+           class="bg-indigo-600 text-white p-3 rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition transform hover:scale-110"
+           aria-label="Gọi ngay" title="Gọi ngay (0909876817)">
+            <i data-lucide="phone" class="w-6 h-6"></i>
+        </a>
+        <a href="https://zalo.me/0909876817" target="_blank" rel="noopener noreferrer"
+           class="bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition transform hover:scale-110"
+           aria-label="Nhắn Zalo" title="Nhắn Zalo (0909876817)">
+            <i data-lucide="message-circle" class="w-6 h-6"></i>
+        </a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Kích hoạt icon Lucide
+            lucide.createIcons();
+
+            // Xử lý menu mobile
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+          
+            if (mobileMenuButton && mobileMenu) {
+                const mobileMenuIcon = mobileMenuButton.querySelector('i');
+
+                mobileMenuButton.addEventListener('click', () => {
+                    const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+                    mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+                    mobileMenu.classList.toggle('hidden');
+                    
+                    if (mobileMenuIcon) {
+                        mobileMenuIcon.setAttribute('data-lucide', isExpanded ? 'menu' : 'x');
+                    }
+                    lucide.createIcons(); 
+                });
+
+                // Đóng menu khi click link
+                document.querySelectorAll('#mobile-menu a').forEach(link => {
+                    link.addEventListener('click', () => {
+                         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+                         const linkTarget = link.getAttribute('href');
+                         if (!linkTarget) return; 
+                         const linkPage = linkTarget.split('#')[0]; 
+                         const isAnchorLinkOnCurrentPage = linkTarget.startsWith('#');
+
+                         // Đóng nếu là link anchor HOẶC link sang trang KHÁC
+                         if (isAnchorLinkOnCurrentPage || (linkPage && linkPage !== currentPage)) {
+                            mobileMenuButton.setAttribute('aria-expanded', 'false');
+                            mobileMenu.classList.add('hidden');
+                             if (mobileMenuIcon) mobileMenuIcon.setAttribute('data-lucide', 'menu');
+                            lucide.createIcons();
+                         }
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
