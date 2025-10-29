@@ -872,7 +872,7 @@
             // === SCRIPT MENU MOBILE ===
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
-            if (mobileMenuButton && mobileMenu) { /* ... (giữ nguyên code menu) ... */ 
+            if (mobileMenuButton && mobileMenu) { 
                  const mobileMenuIcon = mobileMenuButton.querySelector('i');
                 mobileMenuButton.addEventListener('click', () => {
                     const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
@@ -898,7 +898,7 @@
 
             // === SCRIPT GỢI Ý TÊN MIỀN ===
             const domainInput = document.getElementById('domainInput');
-            const industryInput = document.getElementById('industryInput'); // Thêm input ngành nghề
+            const industryInput = document.getElementById('industryInput'); 
             const searchDomainButton = document.getElementById('searchDomainButton');
             const suggestionResultsArea = document.getElementById('suggestionResultsArea');
             const col1ResultsDiv = document.getElementById('column1Results').querySelector('.suggestion-list');
@@ -915,65 +915,107 @@
             function processKeyword(input) {
                 if (!input) return '';
                 let processed = removeAccents(input.trim().toLowerCase());
-                processed = processed.replace(/[^a-z0-9\-\.]/g, '-'); // Chỉ giữ chữ, số, dấu chấm, dấu gạch nối
+                // CẬP NHẬT: Không thay thế '.' nếu nó nằm giữa các chữ cái/số (cho phép user nhập .com)
+                // Chỉ thay thế các ký tự không phải chữ/số/dấu gạch nối bằng '-'
+                processed = processed.replace(/[^a-z0-9\-]+/g, '-'); 
                 processed = processed.replace(/-+/g, '-'); // Thay nhiều dấu -- thành 1 dấu -
                 processed = processed.replace(/^-+|-+$/g, ''); // Xóa dấu - ở đầu/cuối
                 return processed;
             }
+            
+            // CẬP NHẬT: Hàm xử lý từ khóa cho gợi ý (ghép liền, không có dấu '-')
+             function processKeywordForCombine(input) {
+                if (!input) return '';
+                let processed = removeAccents(input.trim().toLowerCase());
+                // Xóa tất cả ký tự không phải chữ cái hoặc số
+                processed = processed.replace(/[^a-z0-9]+/g, ''); 
+                return processed;
+            }
+
 
             // Danh sách đuôi tên miền phổ biến
-            const commonTLDs = ['.com', '.vn', '.net', '.com.vn', '.info', '.org', '.store', '.online'];
+            const commonTLDs = ['.com', '.vn', '.net', '.com.vn', '.info', '.org', '.store', '.online', '.shop', '.xyz', '.site'];
             const vnTLDs = ['.vn', '.com.vn', '.net.vn', '.info.vn', '.edu.vn', '.gov.vn']; // Để phân loại VN
 
-            // Từ khóa ngành nghề đơn giản (ví dụ)
+            // CẬP NHẬT: Mở rộng từ khóa ngành nghề
             const industryKeywords = {
-                'nhua': ['plastic', 'poly'],
-                'thoi trang': ['fashion', 'style', 'boutique', 'shop'],
-                'du lich': ['travel', 'tour', 'booking'],
-                'xay dung': ['construction', 'build', 'decor'],
-                'giao duc': ['edu', 'school', 'academy'],
-                'bat dong san': ['real', 'land', 'property', 'bds'],
-                'noi that': ['interior', 'decor', 'furniture'],
+                'nhua': ['plastic', 'poly', 'plas'],
+                'thoi trang': ['fashion', 'style', 'boutique', 'shop', 'store', 'mode'],
+                'du lich': ['travel', 'tour', 'booking', 'trip', 'holiday'],
+                'xay dung': ['construction', 'build', 'decor', 'home', 'solution', 'group', 'cons'],
+                'giao duc': ['edu', 'school', 'academy', 'learn', 'study'],
+                'bat dong san': ['real', 'land', 'property', 'bds', 'homes', 'realty'],
+                'noi that': ['interior', 'decor', 'furniture', 'design'],
+                'thuc pham': ['food', 'kitchen', 'mart', 'deli'],
+                'my pham': ['beauty', 'cosmetic', 'spa', 'skin'],
+                'cong nghe': ['tech', 'solution', 'soft', 'data', 'it'],
+                'van tai': ['logistics', 'trans', 'ship', 'cargo']
                 // Thêm các ngành khác nếu cần
             };
 
-            // Hàm tạo các gợi ý thông minh
+            // CẬP NHẬT: Hàm tạo các gợi ý thông minh
             function generateSmartSuggestions(keyword, industry) {
-                const suggestions = new Set(); // Dùng Set để tránh trùng lặp
-                const industryProcessed = processKeyword(industry);
+                const suggestions = new Set(); 
+                const keywordProcessedHyphen = processKeyword(keyword); // Dùng cho các gợi ý có thể có gạch nối
+                const keywordProcessedCombine = processKeywordForCombine(keyword); // Dùng để ghép liền
+                const industryProcessedHyphen = processKeyword(industry);
+                const industryProcessedCombine = processKeywordForCombine(industry);
 
-                // 1. Keyword gốc + TLDs
-                commonTLDs.forEach(tld => suggestions.add(keyword + tld));
+                // 1. Keyword gốc + TLDs (Đã có ở cột 1, không cần thêm lại)
+                // commonTLDs.forEach(tld => suggestions.add(keywordProcessedHyphen + tld));
 
-                // 2. Keyword + Ngành (tiếng Anh nếu có)
-                if (industryProcessed) {
-                    const industryEN = industryKeywords[industryProcessed] || [industryProcessed]; // Lấy từ điển hoặc dùng từ gốc
-                    industryEN.forEach(indKey => {
+                // 2. Keyword + Ngành (Ưu tiên ghép liền)
+                if (industryProcessedCombine) {
+                    // Lấy từ tiếng Anh hoặc dùng từ gốc (đã xử lý)
+                    const industryENKeywords = industryKeywords[industryProcessedHyphen] || [industryProcessedCombine]; 
+                    
+                    industryENKeywords.forEach(indKey => {
+                        // Ghép liền keyword + ngành
                         commonTLDs.forEach(tld => {
-                            suggestions.add(keyword + indKey + tld);
-                            suggestions.add(keyword + '-' + indKey + tld);
+                            suggestions.add(keywordProcessedCombine + indKey + tld); 
                         });
+                        // Ghép liền ngành + keyword (ít phổ biến hơn)
+                        // commonTLDs.forEach(tld => {
+                        //     suggestions.add(indKey + keywordProcessedCombine + tld);
+                        // });
+
+                         // Ghép keyword-ngành (ít hơn)
+                         if (keywordProcessedHyphen && indKey) { // Chỉ thêm nếu cả 2 có giá trị
+                            commonTLDs.slice(0, 4).forEach(tld => { // Chỉ với các TLD phổ biến nhất
+                                suggestions.add(keywordProcessedHyphen + '-' + indKey + tld);
+                            });
+                         }
                     });
-                     commonTLDs.forEach(tld => suggestions.add(industryProcessed + keyword + tld)); // Ngành + Keyword
                 }
 
-                // 3. Thêm hậu tố/tiền tố phổ biến
-                ['vn', 'sg', 'hcm', 'hanoi', 'group', 'global', 'tech', 'solution', 'shop', 'store'].forEach(suffix => {
-                     commonTLDs.forEach(tld => suggestions.add(keyword + suffix + tld));
-                });
-                 ['the', 'my', 'best', 'top'].forEach(prefix => {
-                     commonTLDs.forEach(tld => suggestions.add(prefix + keyword + tld));
+                // 3. Thêm hậu tố/tiền tố phổ biến (Ưu tiên ghép liền)
+                 const commonSuffixes = ['vn', 'sg', 'hcm', 'hanoi', 'group', 'global', 'tech', 'solution', 'shop', 'store', 'pro', 'plus'];
+                 commonSuffixes.forEach(suffix => {
+                     commonTLDs.forEach(tld => suggestions.add(keywordProcessedCombine + suffix + tld));
+                 });
+                 const commonPrefixes = ['the', 'my', 'best', 'top', 'go', 'get'];
+                 commonPrefixes.forEach(prefix => {
+                     commonTLDs.forEach(tld => suggestions.add(prefix + keywordProcessedCombine + tld));
+                 });
+                
+                 // Thêm một số biến thể có gạch nối (ít hơn)
+                 ['group', 'global', 'tech', 'solution'].forEach(suffix => {
+                    if(keywordProcessedHyphen){
+                        commonTLDs.slice(0, 2).forEach(tld => suggestions.add(keywordProcessedHyphen + '-' + suffix + tld));
+                    }
                  });
 
-                // Loại bỏ những gợi ý trùng với keyword gốc + tld đã có ở cột 1 (hoặc không cần thiết nếu cột 1 đủ)
-                // Lọc bỏ các tên miền không hợp lệ (ví dụ: có dấu '.' ở giữa ngoài phần TLD)
+
+                // Lọc bỏ các tên miền không hợp lệ và đảm bảo không có "--"
                 const validSuggestions = Array.from(suggestions).filter(domain => {
+                    if (domain.includes('--')) return false; // Loại bỏ "--"
                     const parts = domain.split('.');
-                    return parts.length >= 2 && parts[0] !== '' && parts[parts.length -1] !== '';
-                     // Kiểm tra thêm nếu cần: parts.slice(0, -1).join('.').indexOf('.') === -1
+                    // Đảm bảo có ít nhất 2 phần, phần đầu và cuối không rỗng
+                    return parts.length >= 2 && parts[0] !== '' && parts[parts.length -1] !== ''; 
                 });
 
-                return validSuggestions;
+                // Giới hạn số lượng gợi ý để không quá dài
+                return validSuggestions.slice(0, 50); // Lấy tối đa 50 gợi ý
             }
 
             // Hàm hiển thị kết quả
@@ -982,25 +1024,31 @@
                 col2TabsDiv.innerHTML = ''; // Xóa tabs cũ
                 col2ContentDiv.innerHTML = ''; // Xóa content cũ
 
-                let col1Domains = [];
+                let col1Domains = new Set(); // Dùng Set để tự động loại bỏ trùng lặp
 
                 // Ưu tiên tên miền người dùng nhập nếu có TLD hợp lệ
                 if (userTLD) {
-                     col1Domains.push(keyword + userTLD);
+                     const userDomain = keyword + userTLD;
+                     // Kiểm tra hợp lệ đơn giản (tránh -- và các trường hợp cơ bản)
+                     if (!userDomain.includes('--')) {
+                        col1Domains.add(userDomain);
+                     }
                 }
 
-                // Thêm các TLD phổ biến khác vào cột 1, tránh trùng lặp
+                // Thêm các TLD phổ biến khác vào cột 1
                 commonTLDs.forEach(tld => {
                     const domain = keyword + tld;
-                    // Tránh trùng .com.com, .vn.vn và tránh trùng với tên miền user đã nhập
-                    if (tld !== userTLD && !domain.endsWith(tld + tld) && col1Domains.indexOf(domain) === -1) {
-                         col1Domains.push(domain);
+                    // Tránh trùng .com.com, .vn.vn và kiểm tra hợp lệ
+                    if (!domain.endsWith(tld + tld) && !domain.includes('--')) {
+                         col1Domains.add(domain);
                     }
                 });
+                
+                const col1DomainsArray = Array.from(col1Domains); // Chuyển Set thành Array để xử lý tiếp
 
                 // Hiển thị cột 1
-                if (col1Domains.length > 0) {
-                     col1Domains.forEach(domain => {
+                if (col1DomainsArray.length > 0) {
+                     col1DomainsArray.forEach(domain => {
                          const div = document.createElement('div');
                          div.className = 'suggestion-item';
                          div.innerHTML = `
@@ -1010,7 +1058,7 @@
                          col1ResultsDiv.appendChild(div);
                      });
                  } else {
-                     col1ResultsDiv.innerHTML = '<p class="text-center text-gray-500 p-4">Không có kết quả trực tiếp.</p>';
+                     col1ResultsDiv.innerHTML = '<p class="text-center text-gray-500 p-4">Không có kết quả trực tiếp hợp lệ.</p>';
                  }
 
 
@@ -1020,75 +1068,83 @@
 
                 smartSuggestions.forEach(domain => {
                      // Bỏ qua nếu đã có trong cột 1
-                    if(col1Domains.includes(domain)) return;
+                    if(col1DomainsArray.includes(domain)) return;
 
-                    let tldGroup = 'Khác'; // Nhóm mặc định
-                    for (const tld of commonTLDs.slice().reverse()) { // Check từ dài đến ngắn (.com.vn trước .vn)
+                    let tldGroup = 'Khác'; 
+                    // Ưu tiên các TLD dài hơn trước để phân loại đúng (vd: .com.vn trước .vn)
+                    const sortedTLDs = [...commonTLDs, ...vnTLDs].sort((a, b) => b.length - a.length); 
+                    for (const tld of sortedTLDs) { 
                         if (domain.endsWith(tld)) {
                             tldGroup = tld;
                             break;
                         }
                     }
-                     // Phân nhóm VN riêng nếu cần
-                     // if (vnTLDs.some(vnTld => domain.endsWith(vnTld))) {
-                     //     tldGroup = '.VN';
-                     // } else if (domain.endsWith('.com')) {
-                     //     tldGroup = '.COM';
-                     // } // ... thêm các nhóm khác
-
+                    
                     if (!suggestionsByTLD[tldGroup]) {
                         suggestionsByTLD[tldGroup] = [];
                     }
-                    suggestionsByTLD[tldGroup].push(domain);
+                    // Tránh thêm trùng lặp vào cùng 1 nhóm
+                    if (!suggestionsByTLD[tldGroup].includes(domain)) {
+                        suggestionsByTLD[tldGroup].push(domain);
+                    }
                 });
 
                  // Hiển thị cột 2 (Tabs và Content)
                  const sortedTLDGroups = Object.keys(suggestionsByTLD).sort((a, b) => {
                      // Ưu tiên .com, .vn lên đầu
-                     if (a === '.com') return -1; if (b === '.com') return 1;
-                     if (a === '.vn') return -1; if (b === '.vn') return 1;
-                     if (a === '.com.vn') return -1; if (b === '.com.vn') return 1;
-                     return a.localeCompare(b); // Sắp xếp theo alphabet
+                     const priority = ['.com', '.vn', '.com.vn'];
+                     const aPrio = priority.indexOf(a);
+                     const bPrio = priority.indexOf(b);
+                     if (aPrio !== -1 && bPrio !== -1) return aPrio - bPrio; // Cả 2 ưu tiên -> sắp xếp theo thứ tự ưu tiên
+                     if (aPrio !== -1) return -1; // Chỉ a ưu tiên -> a lên trước
+                     if (bPrio !== -1) return 1;  // Chỉ b ưu tiên -> b lên trước
+                     return a.localeCompare(b); // Không ưu tiên -> sắp xếp theo alphabet
                  });
 
                  if(sortedTLDGroups.length > 0) {
+                    col2ContentDiv.innerHTML = ''; // Xóa placeholder trước khi thêm tab
                     sortedTLDGroups.forEach((tldGroup, index) => {
-                         // Tạo Tab Button
-                         const tabButton = document.createElement('button');
-                         tabButton.className = `tab-btn ${index === 0 ? 'active' : ''}`;
-                         tabButton.dataset.tab = `tab-${tldGroup.replace('.', '')}`; // ID cho content
-                         tabButton.textContent = tldGroup.toUpperCase();
-                         col2TabsDiv.appendChild(tabButton);
+                         // Chỉ tạo tab nếu nhóm đó có gợi ý
+                         if (suggestionsByTLD[tldGroup] && suggestionsByTLD[tldGroup].length > 0) {
+                             // Tạo Tab Button
+                             const tabButton = document.createElement('button');
+                             tabButton.className = `tab-btn ${index === 0 ? 'active' : ''}`;
+                             tabButton.dataset.tab = `tab-${tldGroup.replace(/\./g, '')}`; // ID hợp lệ
+                             tabButton.textContent = tldGroup.toUpperCase();
+                             col2TabsDiv.appendChild(tabButton);
 
-                         // Tạo Tab Content Div
-                         const tabContent = document.createElement('div');
-                         tabContent.id = `tab-${tldGroup.replace('.', '')}`;
-                         tabContent.className = `tab-content ${index === 0 ? 'active' : ''}`;
-                         
-                         suggestionsByTLD[tldGroup].forEach(domain => {
-                             const div = document.createElement('div');
-                             div.className = 'suggestion-item';
-                             div.innerHTML = `
-                                <span class="domain-name">${domain}</span>
-                                <button data-domain="${domain}" class="register-suggestion-btn open-register-modal">Đăng ký</button>
-                             `;
-                             tabContent.appendChild(div);
-                         });
-                         col2ContentDiv.appendChild(tabContent);
+                             // Tạo Tab Content Div
+                             const tabContent = document.createElement('div');
+                             tabContent.id = `tab-${tldGroup.replace(/\./g, '')}`;
+                             tabContent.className = `tab-content ${index === 0 ? 'active' : ''}`;
+                             
+                             suggestionsByTLD[tldGroup].forEach(domain => {
+                                 const div = document.createElement('div');
+                                 div.className = 'suggestion-item';
+                                 div.innerHTML = `
+                                    <span class="domain-name">${domain}</span>
+                                    <button data-domain="${domain}" class="register-suggestion-btn open-register-modal">Đăng ký</button>
+                                 `;
+                                 tabContent.appendChild(div);
+                             });
+                             col2ContentDiv.appendChild(tabContent);
+                         }
                     });
 
-                    // Thêm sự kiện chuyển tab
-                    col2TabsDiv.querySelectorAll('.tab-btn').forEach(button => {
-                         button.addEventListener('click', () => {
-                             // Bỏ active tất cả
-                             col2TabsDiv.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-                             col2ContentDiv.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-                             // Active cái được click
-                             button.classList.add('active');
-                             const targetContent = document.getElementById(button.dataset.tab);
-                             if (targetContent) targetContent.classList.add('active');
+                    // Thêm sự kiện chuyển tab (chỉ nếu có tab được tạo)
+                    if (col2TabsDiv.hasChildNodes()) {
+                        col2TabsDiv.querySelectorAll('.tab-btn').forEach(button => {
+                             button.addEventListener('click', () => {
+                                 col2TabsDiv.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                                 col2ContentDiv.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                                 button.classList.add('active');
+                                 const targetContent = document.getElementById(button.dataset.tab);
+                                 if (targetContent) targetContent.classList.add('active');
+                             });
                          });
-                     });
+                    } else {
+                         col2ContentDiv.innerHTML = '<p class="text-center text-gray-500 p-4">Không có gợi ý nào khác.</p>';
+                    }
 
                  } else {
                      col2ContentDiv.innerHTML = '<p class="text-center text-gray-500 p-4">Không có gợi ý nào khác.</p>';
@@ -1117,15 +1173,23 @@
                     let baseKeywordRaw = rawInput;
                     let userTLD = null;
                     const lastDotIndex = rawInput.lastIndexOf('.');
-                    if (lastDotIndex > 0 && lastDotIndex < rawInput.length - 1) {
+                    // Chỉ tách TLD nếu dấu '.' không phải là ký tự đầu tiên và có ký tự sau nó
+                    if (lastDotIndex > 0 && lastDotIndex < rawInput.length - 1) { 
                          const potentialTLD = rawInput.substring(lastDotIndex).toLowerCase();
-                         // Kiểm tra xem có phải là TLD phổ biến không (để tránh xử lý sai ví dụ abc.co.ltd)
-                         if (commonTLDs.includes(potentialTLD) || vnTLDs.includes(potentialTLD)) {
-                            userTLD = potentialTLD;
-                            baseKeywordRaw = rawInput.substring(0, lastDotIndex);
+                         // Kiểm tra TLD hợp lệ (có trong danh sách hoặc cấu trúc .xx.yy)
+                         const isValidTLD = commonTLDs.includes(potentialTLD) || vnTLDs.includes(potentialTLD) || /^\.[a-z]{2,}(\.[a-z]{2})?$/.test(potentialTLD);
+                         
+                         if (isValidTLD) {
+                            // Kiểm tra thêm để tránh tách sai ví dụ 'abc.co.ltd' thành 'abc.co' và '.ltd'
+                            const potentialBase = rawInput.substring(0, lastDotIndex);
+                            if (potentialBase && !potentialBase.endsWith('.')) { // Phần base không được kết thúc bằng '.'
+                                userTLD = potentialTLD;
+                                baseKeywordRaw = potentialBase;
+                            }
                          }
                     }
 
+                    // Xử lý keyword sau khi đã tách TLD (nếu có)
                     const processedKeyword = processKeyword(baseKeywordRaw);
 
                     if (!processedKeyword) {
@@ -1160,7 +1224,7 @@
                     if (domainToRegister && modalMessageTextarea) {
                         modalMessageTextarea.value = `Tôi muốn đăng ký tên miền: ${domainToRegister}`;
                     } else if (modalMessageTextarea) {
-                         // Nếu mở từ nút chung, có thể để trống hoặc ghi "Tư vấn tên miền"
+                         // Nếu mở từ nút chung, để trống
                         modalMessageTextarea.value = ''; 
                         modalMessageTextarea.placeholder = 'Bạn cần tư vấn thêm về tên miền nào?';
                     }
@@ -1180,22 +1244,29 @@
             }
             
             function attachModalOpenListeners() {
-                 document.querySelectorAll('.open-register-modal').forEach(button => {
-                    const oldClickHandler = button.clickHandler; 
-                    if (oldClickHandler) {
-                        button.removeEventListener('click', oldClickHandler);
-                    }
-                    const newClickHandler = (event) => {
-                        // Cập nhật: Lấy domain từ data attribute hoặc để null
-                        const domain = event.target.dataset.domain || null; 
-                        openModal(domain); 
-                    };
-                    button.addEventListener('click', newClickHandler);
-                    button.clickHandler = newClickHandler; 
-                });
+                 // SỬ DỤNG EVENT DELEGATION cho các nút được tạo động
+                 const resultsArea = document.getElementById('suggestionResultsArea');
+                 const priceTables = document.querySelectorAll('.price-table-container'); // Các nút trong bảng giá
+
+                 const handleOpenClick = (event) => {
+                     if (event.target.classList.contains('open-register-modal')) {
+                         const domain = event.target.dataset.domain || null; // Lấy domain nếu có
+                         openModal(domain);
+                     }
+                 };
+
+                 if (resultsArea) {
+                     resultsArea.removeEventListener('click', handleOpenClick); // Xóa listener cũ (nếu có)
+                     resultsArea.addEventListener('click', handleOpenClick); // Gắn listener mới
+                 }
+                 priceTables.forEach(table => {
+                     table.removeEventListener('click', handleOpenClick); // Xóa listener cũ (nếu có)
+                     table.addEventListener('click', handleOpenClick); // Gắn listener mới
+                 });
             }
 
-            attachModalOpenListeners(); 
+
+            attachModalOpenListeners(); // Gắn listener lần đầu
 
             closeModalButtons.forEach(button => {
                 button.addEventListener('click', closeModal);
